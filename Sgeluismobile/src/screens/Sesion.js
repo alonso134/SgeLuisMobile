@@ -10,7 +10,7 @@ export default function Sesion({ navigation }) {
 
   const handlerLogin = () => {
    
-      navigation.navigate('carga'); // Navegar a la pantalla 'carga' al iniciar sesión correctamente
+      navigation.navigate('carga'); 
   };
 
   const irRegistrar = () => {

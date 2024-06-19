@@ -3,8 +3,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 
 import carga from './src/screens/carga.js'
+import Home from './src/screens/Home.js'
 import Sesion from './src/screens/Sesion.js'
-
 
 export default function App() {
 
@@ -21,7 +21,9 @@ export default function App() {
           headerShown: false
         }}>
         <Stack.Screen name="Sesion" component={Sesion} />
-        <Stack.Screen name="carga" component={carga} />
+        <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen name="carga" component={carga} options={{ headerShown: false }} />
+  
       </Stack.Navigator>
     </NavigationContainer>
 
