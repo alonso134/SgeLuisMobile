@@ -2,29 +2,19 @@ import React, { useState } from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { Appbar } from 'react-native-paper';
 
-const Home = ({ navigation }) => {
+const Ausencias = () => {
   const [menuVisible, setMenuVisible] = useState(false); // Estado para controlar la visibilidad del menú
 
-  const items = [
-    { text: 'Codigos', image: require('../img/codigo.jpg') },
-    { text: 'Observaciones', image: require('../img/observaciones.jpg') },
-    { text: 'Ausencias', image: require('../img/ausencias.jpg') },
-    { text: 'Llegadas Tarde clase', image: require('../img/tardes.jpg') },
-  ];
-
-  const handlePress = (item) => {
-    if (navigation) {
-      if (item.text === 'Ausencias') {
-        navigation.navigate('Ausencias');
-      } else {
-        console.log(`${item.text} presionado`);
-      }
-    } else {
-      console.warn('Navigation prop is not available.');
-    }
-  };
-
   const toggleMenu = () => setMenuVisible(!menuVisible); // Función para alternar el menú
+
+  // Información de la ausencia
+  const ausenciaInfo = {
+    asignatura: 'Matemática',
+    observacion: 'No porta carnet',
+    docente: 'Daniel Carranza',
+    fecha: '20/08/2024',
+    hora: '1:30 pm',
+  };
 
   return (
     <View style={styles.container}>
@@ -34,19 +24,38 @@ const Home = ({ navigation }) => {
           <Image source={require('../../assets/menu-icon.png')} style={styles.menuIcon} />
         </TouchableOpacity>
       </Appbar.Header>
+
+      <View style={styles.centeredTitleContainer}>
+        <Text style={styles.centeredTitle}>Ausencias</Text>
+      </View>
+
+      {/* Tabla de información de la ausencia */}
       <View style={styles.content}>
-        <View style={styles.titleContainer}>
-          <Text style={styles.title}>Inicio</Text>
-        </View>
-        <View style={styles.table}>
-          {items.map((item, index) => (
-            <TouchableOpacity key={index} style={styles.cell} onPress={() => handlePress(item)}>
-              <Image source={item.image} style={styles.image} />
-              <Text style={styles.text}>{item.text}</Text>
-            </TouchableOpacity>
-          ))}
+        <View style={styles.tableContainer}>
+          <View style={styles.tableRow}>
+            <Text style={styles.tableLabel}>Asignatura:</Text>
+            <Text style={styles.tableValue}>{ausenciaInfo.asignatura}</Text>
+          </View>
+          <View style={styles.tableRow}>
+            <Text style={styles.tableLabel}>Observación:</Text>
+            <Text style={styles.tableValue}>{ausenciaInfo.observacion}</Text>
+          </View>
+          <View style={styles.tableRow}>
+            <Text style={styles.tableLabel}>Docente:</Text>
+            <Text style={styles.tableValue}>{ausenciaInfo.docente}</Text>
+          </View>
+          <View style={styles.tableRow}>
+            <Text style={styles.tableLabel}>Fecha:</Text>
+            <Text style={styles.tableValue}>{ausenciaInfo.fecha}</Text>
+          </View>
+          <View style={styles.tableRow}>
+            <Text style={styles.tableLabel}>Hora:</Text>
+            <Text style={styles.tableValue}>{ausenciaInfo.hora}</Text>
+          </View>
         </View>
       </View>
+
+      {/* Menú desplegable */}
       {menuVisible && (
         <View style={styles.overlay}>
           <View style={styles.menu}>
@@ -65,6 +74,7 @@ const Home = ({ navigation }) => {
           </View>
         </View>
       )}
+
     </View>
   );
 };
@@ -93,49 +103,52 @@ const styles = StyleSheet.create({
     width: 35,
     height: 35,
   },
+  centeredTitleContainer: {
+    alignItems: 'center',
+    paddingTop: 10,
+    paddingBottom: 10,
+    backgroundColor: '#FFFFFF',
+    borderBottomWidth: 1,
+    borderBottomColor: '#000000',
+    borderTopWidth: 1,
+    borderTopColor: '#000000',
+  },
+  centeredTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#333',
+  },
   content: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
     padding: 20,
   },
-  titleContainer: {
-    alignItems: 'center',
-    marginBottom: 20,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-  },
-  table: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-around',
-    width: '100%',
+  tableContainer: {
     backgroundColor: '#FFFFFF',
-    padding: 20,
     borderRadius: 10,
+    padding: 30, // Aumenta el padding interior para más espacio
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
+    marginBottom: 20,
+    width: '95%', // Ajusta el ancho del contenedor de la tabla
+    maxWidth: 600, // Establece un ancho máximo para la tabla
   },
-  cell: {
-    alignItems: 'center',
-    margin: 15,
-    width: '40%',
+  tableRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 30, // Aumenta el espacio entre filas
   },
-  image: {
-    width: 80,
-    height: 90,
-    borderRadius: 40,
-    backgroundColor: '#D3D3D3',
+  tableLabel: {
+    fontWeight: 'bold',
+    fontSize: 20, // Aumenta el tamaño de la etiqueta
   },
-  text: {
-    marginTop: 10,
-    fontSize: 18,
-    textAlign: 'center',
+  tableValue: {
+    marginLeft: 10,
+    fontSize: 20, // Aumenta el tamaño del valor
   },
   overlay: {
     ...StyleSheet.absoluteFillObject,
@@ -168,4 +181,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Home;
+export default Ausencias;
