@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { Appbar } from 'react-native-paper';
 
 const Home = ({ navigation }) => {
+  const [menuVisible, setMenuVisible] = useState(false); // Estado para controlar la visibilidad del menú
+
   const items = [
     { text: 'Codigos', image: require('../img/codigo.jpg') },
     { text: 'Observaciones', image: require('../img/observaciones.jpg') },
@@ -16,10 +18,15 @@ const Home = ({ navigation }) => {
     // Puedes usar navigation.navigate('SomeScreen') para navegar a otra pantalla
   };
 
+  const toggleMenu = () => setMenuVisible(!menuVisible); // Función para alternar el menú
+
   return (
     <View style={styles.container}>
       <Appbar.Header style={styles.appBar}>
-        <Appbar.Content title="CECSL" titleStyle={styles.appBarTitle}  />
+        <Appbar.Content title="CECSL" titleStyle={styles.appBarTitle} />
+        <TouchableOpacity onPress={toggleMenu} style={styles.menuButton}>
+          <Image source={require('../../assets/menu-icon.png')} style={styles.menuIcon} />
+        </TouchableOpacity>
       </Appbar.Header>
       <View style={styles.content}>
         <View style={styles.titleContainer}>
@@ -34,6 +41,24 @@ const Home = ({ navigation }) => {
           ))}
         </View>
       </View>
+      {menuVisible && (
+        <View style={styles.overlay}>
+          <View style={styles.menu}>
+            <TouchableOpacity style={styles.menuItem} onPress={() => {}}>
+              <Text>Opción 1</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.menuItem} onPress={() => {}}>
+              <Text>Opción 2</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.menuItem} onPress={() => {}}>
+              <Text>Opción 3</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.closeButton} onPress={toggleMenu}>
+              <Text style={styles.closeButtonText}>Cerrar</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      )}
     </View>
   );
 };
@@ -45,14 +70,22 @@ const styles = StyleSheet.create({
   },
   appBar: {
     backgroundColor: '#120851',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    elevation: 0, // Remover sombra si no es necesaria
+    elevation: 0,
   },
   appBarTitle: {
-    color: '#FFFFFF', // Color del texto del Appbar
-    fontSize: 20, // Tamaño del texto del Appbar
-    fontWeight: 'bold', // Peso de la fuente del texto del Appbar
+    color: '#FFFFFF',
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+  menuButton: {
+    padding: 10,
+    marginRight: 10,
+  },
+  menuIcon: {
+    width: 35,
+    height: 35,
   },
   content: {
     flex: 1,
@@ -72,20 +105,20 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-around',
-    width: '100%', // Ajustar el ancho según sea necesario
-    backgroundColor: '#FFFFFF', // Cambiar este valor al color deseado para la tabla
+    width: '100%',
+    backgroundColor: '#FFFFFF',
     padding: 20,
-    borderRadius: 10, // Opcional, para redondear las esquinas
-    shadowColor: '#000', // Opcional, para sombra
-    shadowOffset: { width: 0, height: 2 }, // Opcional, para sombra
-    shadowOpacity: 0.25, // Opcional, para sombra
-    shadowRadius: 3.84, // Opcional, para sombra
-    elevation: 5, // Opcional, para sombra en Android
+    borderRadius: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   cell: {
     alignItems: 'center',
     margin: 15,
-    width: '40%', // Ajusta este valor para lograr la disposición deseada
+    width: '40%',
   },
   image: {
     width: 80,
@@ -97,6 +130,35 @@ const styles = StyleSheet.create({
     marginTop: 10,
     fontSize: 18,
     textAlign: 'center',
+  },
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  menu: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 10,
+    padding: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  menuItem: {
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#CCCCCC',
+  },
+  closeButton: {
+    marginTop: 10,
+    alignItems: 'center',
+  },
+  closeButtonText: {
+    color: 'red',
+    fontSize: 16,
   },
 });
 
