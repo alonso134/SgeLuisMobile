@@ -59,33 +59,47 @@ const Tarde = () => {
 
             {menuVisible && (
         <View style={styles.overlay}>
-        <View style={styles.menu}>
-          <TouchableOpacity style={styles.menuItem} onPress={() => {}}>
-            <Text> Inicio</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.menuItem} onPress={() => {}}>
-            <Text> Materias</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.menuItem} onPress={() => {}}>
-            <Text> Perfil</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.menuItem} onPress={() => {}}>
-            <Text> Codigos</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.menuItem} onPress={() => {}}>
-            <Text> Observaciones</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.menuItem} onPress={() => {}}>
-            <Text> Ausencias</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.menuItem} onPress={() => {}}>
-            <Text> Llegadas Tarde</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.closeButton} onPress={toggleMenu}>
-            <Text style={styles.closeButtonText}>Cerrar</Text>
-          </TouchableOpacity>
+          <View style={styles.menu}>
+            <TouchableOpacity
+              style={styles.menuItem}
+              onPress={() => navigation.navigate('Home')}>
+              <Text>Inicio</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.menuItem}
+              onPress={() => navigation.navigate('Materias')}>
+              <Text>Materias</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.menuItem}
+              onPress={() => navigation.navigate('Perfil')}>
+              <Text>Perfil</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.menuItem}
+              onPress={() => navigation.navigate('Negativo')}>
+              <Text>Códigos</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.menuItem}
+              onPress={() => navigation.navigate('Observaciones')}>
+              <Text>Observaciones</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.menuItem}
+              onPress={() => navigation.navigate('Ausencias')}>
+              <Text>Ausencias</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.menuItem}
+              onPress={() => navigation.navigate('Tarde')}>
+              <Text>Llegadas Tarde</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.closeButton} onPress={toggleMenu}>
+              <Text style={styles.closeButtonText}>Cerrar</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
       )}
 
             {/* Segundo menú desplegable */}
