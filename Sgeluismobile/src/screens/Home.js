@@ -17,6 +17,8 @@ const Home = ({ navigation }) => {
         navigation.navigate('Ausencias');
       } else if (item.text === 'Observaciones') {
         navigation.navigate('Observación');
+      } else if (item.text === 'Llegadas Tarde clase') {
+        navigation.navigate('Tarde');
       } else {
         console.log(`${item.text} presionado`);
       }

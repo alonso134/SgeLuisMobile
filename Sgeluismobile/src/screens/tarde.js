@@ -2,61 +2,61 @@ import React, { useState } from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { Appbar } from 'react-native-paper';
 
-const Observación = () => {
-  const [menuVisible, setMenuVisible] = useState(false); // Estado para controlar la visibilidad del menú
+const Tarde = () => {
 
-  const toggleMenu = () => setMenuVisible(!menuVisible); // Función para alternar el menú
-
-  // Información de la ausencia
-  const Observaciones = {
-    asignatura: 'Matemática',
-    observacion: 'No porta carnet',
-    docente: 'Daniel Carranza',
-    fecha: '20/08/2024',
-    hora: '1:30 pm',
-  };
-
-  return (
-    <View style={styles.container}>
-      <Appbar.Header style={styles.appBar}>
-        <Appbar.Content title="CECSL" titleStyle={styles.appBarTitle} />
-        <TouchableOpacity onPress={toggleMenu} style={styles.menuButton}>
+    const [menuVisible, setMenuVisible] = useState(false); // Estado para controlar la visibilidad del primer menú
+    const [secondMenuVisible, setSecondMenuVisible] = useState(false); // Estado para controlar la visibilidad del segundo menú
+  
+    const toggleMenu = () => setMenuVisible(!menuVisible); // Función para alternar el primer menú
+    const toggleSecondMenu = () => setSecondMenuVisible(!secondMenuVisible); // Función para alternar el segundo menú
+        // Información de la ausencia
+        const Tarde = {
+          asignatura: 'Ciencias',
+          docente: 'Daniel Carranza',
+          fecha: '20/08/2024',
+          hora: '1:30 pm',
+        };
+      
+        return (
+          <View style={styles.container}>
+            <Appbar.Header style={styles.appBar}>
+              <Appbar.Content title="CECSL" titleStyle={styles.appBarTitle} />
+              <TouchableOpacity onPress={toggleMenu} style={styles.menuButton}>
+                <Image source={require('../../assets/menu-icon.png')} style={styles.menuIcon} />
+              </TouchableOpacity>
+            </Appbar.Header>
+      
+            <View style={styles.centeredTitleContainer}>
+        <Text style={styles.centeredTitle}>Llegadas Tarde a Clases</Text>
+        <TouchableOpacity onPress={toggleSecondMenu} style={styles.menuButton}>
           <Image source={require('../../assets/menu-icon.png')} style={styles.menuIcon} />
         </TouchableOpacity>
-      </Appbar.Header>
-
-      <View style={styles.centeredTitleContainer}>
-        <Text style={styles.centeredTitle}>Observaciones</Text>
       </View>
 
-      {/* Tabla de información de la ausencia */}
-      <View style={styles.content}>
-        <View style={styles.tableContainer}>
-          <View style={styles.tableRow}>
-            <Text style={styles.tableLabel}>Asignatura:</Text>
-            <Text style={styles.tableValue}>{Observaciones.asignatura}</Text>
-          </View>
-          <View style={styles.tableRow}>
-            <Text style={styles.tableLabel}>Observación:</Text>
-            <Text style={styles.tableValue}>{Observaciones.observacion}</Text>
-          </View>
-          <View style={styles.tableRow}>
-            <Text style={styles.tableLabel}>Docente:</Text>
-            <Text style={styles.tableValue}>{Observaciones.docente}</Text>
-          </View>
-          <View style={styles.tableRow}>
-            <Text style={styles.tableLabel}>Fecha:</Text>
-            <Text style={styles.tableValue}>{Observaciones.fecha}</Text>
-          </View>
-          <View style={styles.tableRow}>
-            <Text style={styles.tableLabel}>Hora:</Text>
-            <Text style={styles.tableValue}>{Observaciones.hora}</Text>
-          </View>
-        </View>
-      </View>
+            {/* Tabla de información de la ausencia */}
+            <View style={styles.content}>
+              <View style={styles.tableContainer}>
+                <View style={styles.tableRow}>
+                  <Text style={styles.tableLabel}>Asignatura:</Text>
+                  <Text style={styles.tableValue}>{Tarde.asignatura}</Text>
+                </View>
+                <View style={styles.tableRow}>
+                  <Text style={styles.tableLabel}>Docente:</Text>
+                  <Text style={styles.tableValue}>{Tarde.docente}</Text>
+                </View>
+                <View style={styles.tableRow}>
+                  <Text style={styles.tableLabel}>Fecha:</Text>
+                  <Text style={styles.tableValue}>{Tarde.fecha}</Text>
+                </View>
+                <View style={styles.tableRow}>
+                  <Text style={styles.tableLabel}>Hora:</Text>
+                  <Text style={styles.tableValue}>{Tarde.hora}</Text>
+                </View>
+              </View>
+            </View>
 
-      {/* Menú desplegable */}
-      {menuVisible && (
+          {/* Primer menú desplegable */}
+          {menuVisible && (
         <View style={styles.overlay}>
           <View style={styles.menu}>
             <TouchableOpacity style={styles.menuItem} onPress={() => {}}>
@@ -75,6 +75,19 @@ const Observación = () => {
         </View>
       )}
 
+      {/* Segundo menú desplegable */}
+      {secondMenuVisible && (
+        <View style={styles.overlay}>
+          <View style={styles.menu}>
+            <TouchableOpacity style={styles.menuItem} onPress={() => {}}>
+              <Text>Llegadas Tarde a Institucion</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.closeButton} onPress={toggleSecondMenu}>
+              <Text style={styles.closeButtonText}>Cerrar</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      )}
     </View>
   );
 };
@@ -112,6 +125,9 @@ const styles = StyleSheet.create({
     borderBottomColor: '#000000',
     borderTopWidth: 1,
     borderTopColor: '#000000',
+    flexDirection: 'row', // Agrega esta línea para alinear los elementos en fila
+    justifyContent: 'space-between', // Espacio entre los elementos
+    width: '100%', // Ocupa todo el ancho disponible
   },
   centeredTitle: {
     fontSize: 20,
@@ -181,4 +197,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Observación;
+export default Tarde;
