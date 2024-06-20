@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { Appbar } from 'react-native-paper';
 
-const Ausencias = () => {
+const Ausencias = ({ navigation }) => {
   const [menuVisible, setMenuVisible] = useState(false); // Estado para controlar la visibilidad del menú
 
   const toggleMenu = () => setMenuVisible(!menuVisible); // Función para alternar el menú
@@ -56,7 +56,6 @@ const Ausencias = () => {
         </View>
       </View>
 
-      {/* Menú desplegable */}
       {menuVisible && (
         <View style={styles.overlay}>
           <View style={styles.menu}>
@@ -67,18 +66,13 @@ const Ausencias = () => {
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.menuItem}
-              onPress={() => navigation.navigate('Materias')}>
+              onPress={() => navigation.navigate('MateriasScreen')}>
               <Text>Materias</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.menuItem}
               onPress={() => navigation.navigate('Perfil')}>
               <Text>Perfil</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.menuItem}
-              onPress={() => navigation.navigate('Negativo')}>
-              <Text>Códigos</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.menuItem}
@@ -101,7 +95,6 @@ const Ausencias = () => {
           </View>
         </View>
       )}
-
     </View>
   );
 };

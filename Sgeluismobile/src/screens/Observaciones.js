@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { Appbar } from 'react-native-paper';
 
-const Observación = () => {
+const Observación = ({ navigation }) => {
   const [menuVisible, setMenuVisible] = useState(false); // Estado para controlar la visibilidad del menú
 
   const toggleMenu = () => setMenuVisible(!menuVisible); // Función para alternar el menú
@@ -54,7 +54,6 @@ const Observación = () => {
           </View>
         </View>
       </View>
-
       {menuVisible && (
         <View style={styles.overlay}>
           <View style={styles.menu}>
@@ -65,18 +64,13 @@ const Observación = () => {
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.menuItem}
-              onPress={() => navigation.navigate('Materias')}>
+              onPress={() => navigation.navigate('MateriasScreen')}>
               <Text>Materias</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.menuItem}
               onPress={() => navigation.navigate('Perfil')}>
               <Text>Perfil</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.menuItem}
-              onPress={() => navigation.navigate('Negativo')}>
-              <Text>Códigos</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.menuItem}

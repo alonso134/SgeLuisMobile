@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { Appbar } from 'react-native-paper';
-import { useNavigation } from '@react-navigation/native';
 
-const Institución = () => {
-    const navigation = useNavigation();
+const Institución = ({ navigation }) => {
+  
     const [menuVisible, setMenuVisible] = useState(false); // Estado para controlar la visibilidad del primer menú
     const [secondMenuVisible, setSecondMenuVisible] = useState(false); // Estado para controlar la visibilidad del segundo menú
   
@@ -62,8 +61,7 @@ const Institución = () => {
           </View>
         </View>
       </View>
-   {/* Primer menú desplegable */}
-   {menuVisible && (
+      {menuVisible && (
         <View style={styles.overlay}>
           <View style={styles.menu}>
             <TouchableOpacity
@@ -73,18 +71,13 @@ const Institución = () => {
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.menuItem}
-              onPress={() => navigation.navigate('Materias')}>
+              onPress={() => navigation.navigate('MateriasScreen')}>
               <Text>Materias</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.menuItem}
               onPress={() => navigation.navigate('Perfil')}>
               <Text>Perfil</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.menuItem}
-              onPress={() => navigation.navigate('Negativo')}>
-              <Text>Códigos</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.menuItem}

@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from 'rea
 import { Appbar } from 'react-native-paper';
 
 
-const MateriasScreen = () => {
+const MateriasScreen = ({ navigation }) => {
     
     const [menuVisible, setMenuVisible] = useState(false); // Estado para controlar la visibilidad del menú
 
@@ -97,18 +97,13 @@ const MateriasScreen = () => {
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.menuItem}
-              onPress={() => navigation.navigate('Materias')}>
+              onPress={() => navigation.navigate('MateriasScreen')}>
               <Text>Materias</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.menuItem}
               onPress={() => navigation.navigate('Perfil')}>
               <Text>Perfil</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.menuItem}
-              onPress={() => navigation.navigate('Negativo')}>
-              <Text>Códigos</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.menuItem}

@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { Appbar } from 'react-native-paper';
-import { useNavigation } from '@react-navigation/native';
 
-const Tarde = () => {
-    const navigation = useNavigation();
+
+const Tarde = ({ navigation }) => {
+  
 
     const [menuVisible, setMenuVisible] = useState(false); // Estado para controlar la visibilidad del primer menú
     const [secondMenuVisible, setSecondMenuVisible] = useState(false); // Estado para controlar la visibilidad del segundo menú
@@ -67,7 +67,7 @@ const Tarde = () => {
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.menuItem}
-              onPress={() => navigation.navigate('Materias')}>
+              onPress={() => navigation.navigate('MateriasScreen')}>
               <Text>Materias</Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -101,6 +101,7 @@ const Tarde = () => {
           </View>
         </View>
       )}
+  
 
             {/* Segundo menú desplegable */}
             {secondMenuVisible && (

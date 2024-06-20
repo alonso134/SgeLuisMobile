@@ -2,33 +2,11 @@ import React, { useState } from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { Appbar } from 'react-native-paper';
 
-const Home = ({ navigation }) => {
-  const [menuVisible, setMenuVisible] = useState(false); // Estado para controlar la visibilidad del menú
+const Perfil = ({ navigation }) => {
 
-  const items = [
-    { text: 'Codigos', image: require('../img/codigo.jpg') },
-    { text: 'Observaciones', image: require('../img/observaciones.jpg') },
-    { text: 'Ausencias', image: require('../img/ausencias.jpg') },
-    { text: 'Llegadas Tarde clase', image: require('../img/tardes.jpg') },
-  ];
-  const handlePress = (item) => {
-    if (navigation) {
-      if (item.text === 'Ausencias') {
-        navigation.navigate('Ausencias');
-      } else if (item.text === 'Observaciones') {
-        navigation.navigate('Observación');
-      } else if (item.text === 'Llegadas Tarde clase') {
-        navigation.navigate('Tarde');
-      } 
-     else {
-        console.log(`${item.text} presionado`);
-      }
-    } else {
-      console.warn('Navigation prop is not available.');
-    }
-  };
+  const [menuVisible, setMenuVisible] = useState(false);
 
-  const toggleMenu = () => setMenuVisible(!menuVisible); // Función para alternar el menú
+  const toggleMenu = () => setMenuVisible(!menuVisible);
 
   return (
     <View style={styles.container}>
@@ -38,17 +16,17 @@ const Home = ({ navigation }) => {
           <Image source={require('../../assets/menu-icon.png')} style={styles.menuIcon} />
         </TouchableOpacity>
       </Appbar.Header>
-      <View style={styles.content}>
-        <View style={styles.titleContainer}>
-          <Text style={styles.title}>Inicio</Text>
-        </View>
-        <View style={styles.table}>
-          {items.map((item, index) => (
-            <TouchableOpacity key={index} style={styles.cell} onPress={() => handlePress(item)}>
-              <Image source={item.image} style={styles.image} />
-              <Text style={styles.text}>{item.text}</Text>
-            </TouchableOpacity>
-          ))}
+
+      <View style={styles.profileContainer}>
+        <Text style={styles.profileTitle}>Perfil</Text>
+        <View style={styles.profileInfo}>
+          <Image source={require('../../assets/avatar.png')} style={styles.profileImage} />
+          <Text style={styles.profileId}>20220133</Text>
+          <Text style={styles.profileName}>Fernando Alonso Martínez Rosales</Text>
+          <Text style={styles.profileGrade}>Noveno Grado</Text>
+          <TouchableOpacity style={styles.logoutButton}>
+            <Text style={styles.logoutButtonText}>Cerrar Sesión</Text>
+          </TouchableOpacity>
         </View>
       </View>
 
@@ -91,7 +69,6 @@ const Home = ({ navigation }) => {
           </View>
         </View>
       )}
-
     </View>
   );
 };
@@ -120,49 +97,63 @@ const styles = StyleSheet.create({
     width: 35,
     height: 35,
   },
-  content: {
+  profileContainer: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
     padding: 20,
   },
-  titleContainer: {
-    alignItems: 'center',
-    marginBottom: 20,
-  },
-  title: {
+  profileTitle: {
     fontSize: 24,
     fontWeight: 'bold',
+    marginBottom: 20,
   },
-  table: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-around',
-    width: '100%',
+  profileInfo: {
+    alignItems: 'center',
     backgroundColor: '#FFFFFF',
     padding: 20,
     borderRadius: 10,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
+    shadowOpacity: 0.1,
     shadowRadius: 3.84,
     elevation: 5,
   },
-  cell: {
-    alignItems: 'center',
-    margin: 15,
-    width: '40%',
-  },
-  image: {
+  profileImage: {
     width: 80,
-    height: 90,
+    height: 80,
     borderRadius: 40,
-    backgroundColor: '#D3D3D3',
+    marginBottom: 10,
   },
-  text: {
-    marginTop: 10,
+  verifiedIcon: {
+    width: 24,
+    height: 24,
+    position: 'absolute',
+    top: 70,
+    right: 10,
+  },
+  profileId: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 5,
+  },
+  profileName: {
     fontSize: 18,
-    textAlign: 'center',
+    marginBottom: 5,
+  },
+  profileGrade: {
+    fontSize: 16,
+    marginBottom: 20,
+  },
+  logoutButton: {
+    backgroundColor: '#000080',
+    padding: 10,
+    borderRadius: 5,
+  },
+  logoutButtonText: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
   overlay: {
     ...StyleSheet.absoluteFillObject,
@@ -195,4 +186,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Home;
+export default Perfil;
