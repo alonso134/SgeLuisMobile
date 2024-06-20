@@ -11,11 +11,12 @@ const Home = ({ navigation }) => {
     { text: 'Ausencias', image: require('../img/ausencias.jpg') },
     { text: 'Llegadas Tarde clase', image: require('../img/tardes.jpg') },
   ];
-
   const handlePress = (item) => {
     if (navigation) {
       if (item.text === 'Ausencias') {
         navigation.navigate('Ausencias');
+      } else if (item.text === 'Observaciones') {
+        navigation.navigate('Observación');
       } else {
         console.log(`${item.text} presionado`);
       }

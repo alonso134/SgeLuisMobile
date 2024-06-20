@@ -6,6 +6,7 @@ import carga from './src/screens/carga.js'
 import Home from './src/screens/Home.js'
 import Sesion from './src/screens/Sesion.js'
 import Ausencias from './src/screens/Ausencias.js'
+import Observación from './src/screens/Observaciones.js'
 
 export default function App() {
 
@@ -25,6 +26,7 @@ export default function App() {
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="carga" component={carga} options={{ headerShown: false }} />
         <Stack.Screen name="Ausencias" component={Ausencias} />
+        <Stack.Screen name="Observación" component={Observación} />
       </Stack.Navigator>
     </NavigationContainer>
 

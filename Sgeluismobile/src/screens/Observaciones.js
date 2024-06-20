@@ -26,7 +26,7 @@ const Observación = () => {
       </Appbar.Header>
 
       <View style={styles.centeredTitleContainer}>
-        <Text style={styles.centeredTitle}>Ausencias</Text>
+        <Text style={styles.centeredTitle}>Observaciones</Text>
       </View>
 
       {/* Tabla de información de la ausencia */}

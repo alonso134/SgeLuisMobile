@@ -10,10 +10,9 @@ const Ausencias = () => {
   // Información de la ausencia
   const ausenciaInfo = {
     asignatura: 'Matemática',
-    observacion: 'No porta carnet',
     docente: 'Daniel Carranza',
     fecha: '20/08/2024',
-    hora: '1:30 pm',
+    estado: true,
   };
 
   return (
@@ -33,15 +32,11 @@ const Ausencias = () => {
       <View style={styles.content}>
         <View style={styles.tableContainer}>
           <View style={styles.tableRow}>
-            <Text style={styles.tableLabel}>Asignatura:</Text>
+            <Text style={styles.tableLabel}>Asignatura</Text>
             <Text style={styles.tableValue}>{ausenciaInfo.asignatura}</Text>
           </View>
           <View style={styles.tableRow}>
-            <Text style={styles.tableLabel}>Observación:</Text>
-            <Text style={styles.tableValue}>{ausenciaInfo.observacion}</Text>
-          </View>
-          <View style={styles.tableRow}>
-            <Text style={styles.tableLabel}>Docente:</Text>
+            <Text style={styles.tableLabel}>Maestro:</Text>
             <Text style={styles.tableValue}>{ausenciaInfo.docente}</Text>
           </View>
           <View style={styles.tableRow}>
@@ -49,8 +44,14 @@ const Ausencias = () => {
             <Text style={styles.tableValue}>{ausenciaInfo.fecha}</Text>
           </View>
           <View style={styles.tableRow}>
-            <Text style={styles.tableLabel}>Hora:</Text>
-            <Text style={styles.tableValue}>{ausenciaInfo.hora}</Text>
+            <Text style={styles.tableLabel}>Estado:</Text>
+            <Text style={styles.tableValue}>
+              {ausenciaInfo.estado ? (
+                <Image source={require('../../assets/check-icon.png')} style={styles.checkIcon} />
+              ) : (
+                <Text>Pendiente</Text>
+              )}
+            </Text>
           </View>
         </View>
       </View>
@@ -74,7 +75,6 @@ const Ausencias = () => {
           </View>
         </View>
       )}
-
     </View>
   );
 };
@@ -147,8 +147,13 @@ const styles = StyleSheet.create({
     fontSize: 20, // Aumenta el tamaño de la etiqueta
   },
   tableValue: {
-    marginLeft: 10,
+    marginLeft: 20,
     fontSize: 20, // Aumenta el tamaño del valor
+
+  },
+  checkIcon: {
+    width: 30,
+    height: 30,
   },
   overlay: {
     ...StyleSheet.absoluteFillObject,
