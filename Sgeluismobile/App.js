@@ -8,6 +8,7 @@ import Sesion from './src/screens/Sesion.js'
 import Ausencias from './src/screens/Ausencias.js'
 import Observación from './src/screens/Observaciones.js'
 import Tarde from './src/screens/tarde.js'
+import Institución from './src/screens/institucion.js'
 
 export default function App() {
 
@@ -29,6 +30,7 @@ export default function App() {
         <Stack.Screen name="Ausencias" component={Ausencias} />
         <Stack.Screen name="Observación" component={Observación} />
         <Stack.Screen name="Tarde" component={Tarde} />
+        <Stack.Screen name="Institución" component={Institución} />
       </Stack.Navigator>
     </NavigationContainer>
 

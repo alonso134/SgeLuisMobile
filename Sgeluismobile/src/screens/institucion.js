@@ -3,62 +3,67 @@ import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { Appbar } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 
-const Tarde = () => {
+const Institución = () => {
     const navigation = useNavigation();
-
     const [menuVisible, setMenuVisible] = useState(false); // Estado para controlar la visibilidad del primer menú
     const [secondMenuVisible, setSecondMenuVisible] = useState(false); // Estado para controlar la visibilidad del segundo menú
   
     const toggleMenu = () => setMenuVisible(!menuVisible); // Función para alternar el primer menú
     const toggleSecondMenu = () => setSecondMenuVisible(!secondMenuVisible); // Función para alternar el segundo menú
-        // Información de la ausencia
-        const Tarde = {
-          asignatura: 'Ciencias',
-          docente: 'Daniel Carranza',
-          fecha: '20/08/2024',
-          hora: '1:30 pm',
-        };
-      
-        return (
-          <View style={styles.container}>
-            <Appbar.Header style={styles.appBar}>
-              <Appbar.Content title="CECSL" titleStyle={styles.appBarTitle} />
-              <TouchableOpacity onPress={toggleMenu} style={styles.menuButton}>
-                <Image source={require('../../assets/menu-icon.png')} style={styles.menuIcon} />
-              </TouchableOpacity>
-            </Appbar.Header>
-      
-            <View style={styles.centeredTitleContainer}>
-        <Text style={styles.centeredTitle}>Llegadas Tarde a Clases</Text>
+
+  // Información de la ausencia
+  const institución = {
+    asignatura: 'Matemática',
+    docente: 'Daniel Carranza',
+    fecha: '20/08/2024',
+    estado: true,
+  };
+
+  return (
+    <View style={styles.container}>
+      <Appbar.Header style={styles.appBar}>
+        <Appbar.Content title="CECSL" titleStyle={styles.appBarTitle} />
+        <TouchableOpacity onPress={toggleMenu} style={styles.menuButton}>
+          <Image source={require('../../assets/menu-icon.png')} style={styles.menuIcon} />
+        </TouchableOpacity>
+      </Appbar.Header>
+
+      <View style={styles.centeredTitleContainer}>
+        <Text style={styles.centeredTitle}>Llegadas Tarde a Institucion</Text>
         <TouchableOpacity onPress={toggleSecondMenu} style={styles.menuButton}>
           <Image source={require('../../assets/menu-icon.png')} style={styles.menuIcon} />
         </TouchableOpacity>
       </View>
 
-            {/* Tabla de información de la ausencia */}
-            <View style={styles.content}>
-              <View style={styles.tableContainer}>
-                <View style={styles.tableRow}>
-                  <Text style={styles.tableLabel}>Asignatura:</Text>
-                  <Text style={styles.tableValue}>{Tarde.asignatura}</Text>
-                </View>
-                <View style={styles.tableRow}>
-                  <Text style={styles.tableLabel}>Docente:</Text>
-                  <Text style={styles.tableValue}>{Tarde.docente}</Text>
-                </View>
-                <View style={styles.tableRow}>
-                  <Text style={styles.tableLabel}>Fecha:</Text>
-                  <Text style={styles.tableValue}>{Tarde.fecha}</Text>
-                </View>
-                <View style={styles.tableRow}>
-                  <Text style={styles.tableLabel}>Hora:</Text>
-                  <Text style={styles.tableValue}>{Tarde.hora}</Text>
-                </View>
-              </View>
-            </View>
-
-          {/* Primer menú desplegable */}
-          {menuVisible && (
+      {/* Tabla de información de la ausencia */}
+      <View style={styles.content}>
+        <View style={styles.tableContainer}>
+          <View style={styles.tableRow}>
+            <Text style={styles.tableLabel}>Asignatura</Text>
+            <Text style={styles.tableValue}>{institución.asignatura}</Text>
+          </View>
+          <View style={styles.tableRow}>
+            <Text style={styles.tableLabel}>Maestro:</Text>
+            <Text style={styles.tableValue}>{institución.docente}</Text>
+          </View>
+          <View style={styles.tableRow}>
+            <Text style={styles.tableLabel}>Fecha:</Text>
+            <Text style={styles.tableValue}>{institución.fecha}</Text>
+          </View>
+          <View style={styles.tableRow}>
+            <Text style={styles.tableLabel}>Estado:</Text>
+            <Text style={styles.tableValue}>
+              {institución.estado ? (
+                <Image source={require('../../assets/negative-icon.png')} style={styles.checkIcon} />
+              ) : (
+                <Text>Pendiente</Text>
+              )}
+            </Text>
+          </View>
+        </View>
+      </View>
+   {/* Primer menú desplegable */}
+   {menuVisible && (
         <View style={styles.overlay}>
           <View style={styles.menu}>
             <TouchableOpacity style={styles.menuItem} onPress={() => {}}>
@@ -83,8 +88,8 @@ const Tarde = () => {
           <View style={styles.menu}>
             <TouchableOpacity
               style={styles.menuItem}
-              onPress={() => navigation.navigate('Institución')}>
-              <Text>Llegadas Tarde a Institución</Text>
+              onPress={() => navigation.navigate('Tarde')}>
+              <Text>Llegadas Tarde a Clases</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.closeButton} onPress={toggleSecondMenu}>
               <Text style={styles.closeButtonText}>Cerrar</Text>
@@ -130,9 +135,6 @@ const styles = StyleSheet.create({
     borderBottomColor: '#000000',
     borderTopWidth: 1,
     borderTopColor: '#000000',
-    flexDirection: 'row', // Agrega esta línea para alinear los elementos en fila
-    justifyContent: 'space-between', // Espacio entre los elementos
-    width: '100%', // Ocupa todo el ancho disponible
   },
   centeredTitle: {
     fontSize: 20,
@@ -168,8 +170,13 @@ const styles = StyleSheet.create({
     fontSize: 20, // Aumenta el tamaño de la etiqueta
   },
   tableValue: {
-    marginLeft: 10,
+    marginLeft: 20,
     fontSize: 20, // Aumenta el tamaño del valor
+
+  },
+  checkIcon: {
+    width: 40,
+    height: 30,
   },
   overlay: {
     ...StyleSheet.absoluteFillObject,
@@ -202,4 +209,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Tarde;
+export default Institución;
