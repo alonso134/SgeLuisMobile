@@ -52,22 +52,35 @@ const Home = ({ navigation }) => {
       </View>
       {menuVisible && (
         <View style={styles.overlay}>
-          <View style={styles.menu}>
-            <TouchableOpacity style={styles.menuItem} onPress={() => {}}>
-              <Text>Opción 1</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.menuItem} onPress={() => {}}>
-              <Text>Opción 2</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.menuItem} onPress={() => {}}>
-              <Text>Opción 3</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.closeButton} onPress={toggleMenu}>
-              <Text style={styles.closeButtonText}>Cerrar</Text>
-            </TouchableOpacity>
-          </View>
+        <View style={styles.menu}>
+          <TouchableOpacity style={styles.menuItem} onPress={() => {}}>
+            <Text> Inicio</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.menuItem} onPress={() => {}}>
+            <Text> Materias</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.menuItem} onPress={() => {}}>
+            <Text> Perfil</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.menuItem} onPress={() => {}}>
+            <Text> Codigos</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.menuItem} onPress={() => {}}>
+            <Text> Observaciones</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.menuItem} onPress={() => {}}>
+            <Text> Ausencias</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.menuItem} onPress={() => {}}>
+            <Text> Llegadas Tarde</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.closeButton} onPress={toggleMenu}>
+            <Text style={styles.closeButtonText}>Cerrar</Text>
+          </TouchableOpacity>
         </View>
+      </View>
       )}
+
     </View>
   );
 };
