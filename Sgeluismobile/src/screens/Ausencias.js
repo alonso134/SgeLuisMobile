@@ -89,6 +89,9 @@ const Ausencias = ({ navigation }) => {
               onPress={() => navigation.navigate('Tarde')}>
               <Text>Llegadas Tarde</Text>
             </TouchableOpacity>
+            <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Codigos')}>
+              <Text>Codigos</Text>
+            </TouchableOpacity>
             <TouchableOpacity style={styles.closeButton} onPress={toggleMenu}>
               <Text style={styles.closeButtonText}>Cerrar</Text>
             </TouchableOpacity>

@@ -3,7 +3,7 @@ import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { Appbar } from 'react-native-paper';
 
 const Home = ({ navigation }) => {
-  const [menuVisible, setMenuVisible] = useState(false); // Estado para controlar la visibilidad del menú
+  const [menuVisible, setMenuVisible] = useState(false);
 
   const items = [
     { text: 'Codigos', image: require('../img/codigo.jpg') },
@@ -11,24 +11,29 @@ const Home = ({ navigation }) => {
     { text: 'Ausencias', image: require('../img/ausencias.jpg') },
     { text: 'Llegadas Tarde clase', image: require('../img/tardes.jpg') },
   ];
+
   const handlePress = (item) => {
-    if (navigation) {
-      if (item.text === 'Ausencias') {
+    switch (item.text) {
+      case 'Ausencias':
         navigation.navigate('Ausencias');
-      } else if (item.text === 'Observaciones') {
-        navigation.navigate('Observación');
-      } else if (item.text === 'Llegadas Tarde clase') {
+        break;
+      case 'Observaciones':
+        navigation.navigate('Observaciones'); // Asegúrate de que coincida con el nombre en Stack.Navigator
+        break;
+      case 'Llegadas Tarde clase':
         navigation.navigate('Tarde');
-      } 
-     else {
+        break;
+      case 'Codigos':
+        navigation.navigate('Codigos');
+        break;
+      default:
         console.log(`${item.text} presionado`);
-      }
-    } else {
-      console.warn('Navigation prop is not available.');
+        break;
     }
   };
+  
 
-  const toggleMenu = () => setMenuVisible(!menuVisible); // Función para alternar el menú
+  const toggleMenu = () => setMenuVisible(!menuVisible);
 
   return (
     <View style={styles.container}>
@@ -55,35 +60,26 @@ const Home = ({ navigation }) => {
       {menuVisible && (
         <View style={styles.overlay}>
           <View style={styles.menu}>
-            <TouchableOpacity
-              style={styles.menuItem}
-              onPress={() => navigation.navigate('Home')}>
+            <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Home')}>
               <Text>Inicio</Text>
             </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.menuItem}
-              onPress={() => navigation.navigate('MateriasScreen')}>
+            <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('MateriasScreen')}>
               <Text>Materias</Text>
             </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.menuItem}
-              onPress={() => navigation.navigate('Perfil')}>
+            <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Perfil')}>
               <Text>Perfil</Text>
             </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.menuItem}
-              onPress={() => navigation.navigate('Observaciones')}>
+            <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Observaciones')}>
               <Text>Observaciones</Text>
             </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.menuItem}
-              onPress={() => navigation.navigate('Ausencias')}>
+            <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Ausencias')}>
               <Text>Ausencias</Text>
             </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.menuItem}
-              onPress={() => navigation.navigate('Tarde')}>
+            <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Tarde')}>
               <Text>Llegadas Tarde</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Codigos')}>
+              <Text>Codigos</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.closeButton} onPress={toggleMenu}>
               <Text style={styles.closeButtonText}>Cerrar</Text>
@@ -95,6 +91,8 @@ const Home = ({ navigation }) => {
     </View>
   );
 };
+
+
 
 const styles = StyleSheet.create({
   container: {

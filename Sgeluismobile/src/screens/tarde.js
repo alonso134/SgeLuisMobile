@@ -75,11 +75,7 @@ const Tarde = ({ navigation }) => {
               onPress={() => navigation.navigate('Perfil')}>
               <Text>Perfil</Text>
             </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.menuItem}
-              onPress={() => navigation.navigate('Negativo')}>
-              <Text>Códigos</Text>
-            </TouchableOpacity>
+
             <TouchableOpacity
               style={styles.menuItem}
               onPress={() => navigation.navigate('Observaciones')}>
@@ -94,6 +90,9 @@ const Tarde = ({ navigation }) => {
               style={styles.menuItem}
               onPress={() => navigation.navigate('Tarde')}>
               <Text>Llegadas Tarde</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Codigos')}>
+              <Text>Codigos</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.closeButton} onPress={toggleMenu}>
               <Text style={styles.closeButtonText}>Cerrar</Text>
