@@ -8,7 +8,7 @@ import Codigos from './src/screens/codigos.js';
 import Ausencias from './src/screens/Ausencias.js';
 import Observacion from './src/screens/Observaciones.js'; 
 import Tarde from './src/screens/tarde.js'; 
-import Institucion from './src/screens/institucion.js';
+import Institución from './src/screens/institucion.js';
 import MateriasScreen from './src/screens/materias.js';
 import Perfil from './src/screens/perfil.js';
 
@@ -29,7 +29,7 @@ export default function App() {
         <Stack.Screen name="Ausencias" component={Ausencias} />
         <Stack.Screen name="Observaciones" component={Observacion} />
         <Stack.Screen name="Tarde" component={Tarde} />
-        <Stack.Screen name="Institucion" component={Institucion} />
+        <Stack.Screen name="Institución" component={Institución} />
         <Stack.Screen name="MateriasScreen" component={MateriasScreen} />
         <Stack.Screen name="Perfil" component={Perfil} />
       </Stack.Navigator>
