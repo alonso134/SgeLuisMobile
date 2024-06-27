@@ -1,3 +1,0 @@
-# SgeLuisMobile
-
-EXPO TECNICA 2024
