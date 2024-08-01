@@ -11,6 +11,7 @@ const Home = ({ navigation }) => {
     { text: 'Codigos', image: require('../img/codigos.png'), route: 'Codigos' },
     { text: 'Asistencia', image: require('../img/asistencia.png'), route: 'Asistencia' },
     { text: 'Conducta', image: require('../img/conducta.png'), route: 'comportamientos' },
+    { text: 'Profesores', image: require('../img/profesor.png'), route: 'profesores' },
   ];
 
   const handlePress = (item) => {
@@ -84,6 +85,7 @@ const Home = ({ navigation }) => {
            onPress={() => navigation.navigate('Codigos')}>
            <Text>Codigos</Text>
          </TouchableOpacity>
+         
      
          <TouchableOpacity style={styles.closeButton} onPress={toggleMenu}>
            <Text style={styles.closeButtonText}>Cerrar</Text>

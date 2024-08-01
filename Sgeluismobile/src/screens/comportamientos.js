@@ -8,7 +8,7 @@ const Comportamientos = ({ navigation }) => {
     const [menuVisible, setMenuVisible] = useState(false);
 
   const items = [
-    { text: 'Asistencia', image: require('../img/codigos.png'), route: 'Comportamiento' },
+    { text: 'Comportamiento', image: require('../img/codigos.png'), route: 'Comportamiento' },
   ];
 
   const handlePress = (item) => {

@@ -21,6 +21,7 @@ import Materia from './src/screens/Materia.js';
 import materia from './src/screens/materias.js'; 
 import profesores from './src/screens/profesores.js'; 
 import Perfil from './src/screens/perfil.js';
+import Inscripcion from './src/screens/inscripcion.js';
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -52,6 +53,7 @@ export default function App() {
         <Stack.Screen name="materia" component={materia} />
         <Stack.Screen name="profesores" component={profesores} />
         <Stack.Screen name="Perfil" component={Perfil} />
+        <Stack.Screen name="Inscripcion" component={Inscripcion} />
       </Stack.Navigator>
     </NavigationContainer>
   );
