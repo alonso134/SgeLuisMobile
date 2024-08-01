@@ -3,20 +3,20 @@ import { View, Text, StyleSheet, FlatList, Alert, TouchableOpacity, Image } from
 import { Appbar } from 'react-native-paper';
 import * as Constantes from '../utils/constantes';
 
-const AsistenciaScreen = ({ navigation }) => {
+const EstudianteScreen = ({ navigation }) => {
   const ip = Constantes.IP;
   const [menuVisible, setMenuVisible] = useState(false);
-  const [observaciones, setAsistencia] = useState([]);
+  const [observaciones, setEstudiantes] = useState([]);
 
   const toggleMenu = () => setMenuVisible(!menuVisible);
 
   useEffect(() => {
-    fetchAsistencias();
+    fetchEstudiantes();
   }, []);
 
-  const fetchAsistencias = async () => {
+  const fetchEstudiantes = async () => {
     try {
-      const response = await fetch(`${ip}/EXPO2024/api/services/admin/asistencias.php?action=readAll`, {
+      const response = await fetch(`${ip}/EXPO2024/api/services/admin/estudiante.php?action=readAll`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
@@ -26,14 +26,14 @@ const AsistenciaScreen = ({ navigation }) => {
       const data = await response.json();
       console.log('Respuesta de la API:', data); // Log para verificar la respuesta
       if (data.status === 1) {
-        setAsistencia(data.dataset);
+        setEstudiantes(data.dataset);
       } else {
         console.error(data.error);
-        setAsistencia([]); // Asegurarse de que observaciones es un array
+        setEstudiantes([]); // Asegurarse de que observaciones es un array
       }
     } catch (error) {
-      console.error('Error al obtener las asistencias:', error);
-      setAsistencia([]); // Asegurarse de que observaciones es un array
+      console.error('Error al obtener los estudiantes:', error);
+      setEstudiantes([]); // Asegurarse de que observaciones es un array
     }
   };
 
@@ -41,20 +41,24 @@ const AsistenciaScreen = ({ navigation }) => {
     <View style={styles.content}>
       <View style={styles.tableContainer}>
         <View style={styles.tableRow}>
-          <Text style={styles.tableLabel}>Fecha:</Text>
-          <Text style={styles.tableValue}>{item.fecha}</Text>
-        </View>
-        <View style={styles.tableRow}>
-          <Text style={styles.tableLabel}>Estudiante:</Text>
+          <Text style={styles.tableLabel}>Nombre:</Text>
           <Text style={styles.tableValue}>{item.nombre_estudiante}</Text>
         </View>
         <View style={styles.tableRow}>
-          <Text style={styles.tableLabel}>Profesor:</Text>
-          <Text style={styles.tableValue}>{item.nombre_profesor}</Text>
+          <Text style={styles.tableLabel}>Apellido:</Text>
+          <Text style={styles.tableValue}>{item.apellido_estudiante}</Text>
         </View>
         <View style={styles.tableRow}>
-          <Text style={styles.tableLabel}>Estado:</Text>
-          <Text style={styles.tableValue}>{item.estado}</Text>
+          <Text style={styles.tableLabel}>Correo:</Text>
+          <Text style={styles.tableValue}>{item.correo_estudiante}</Text>
+        </View>
+        <View style={styles.tableRow}>
+          <Text style={styles.tableLabel}>Nacimiento:</Text>
+          <Text style={styles.tableValue}>{item.fecha_de_nacimiento}</Text>
+        </View>
+        <View style={styles.tableRow}>
+          <Text style={styles.tableLabel}>Grado:</Text>
+          <Text style={styles.tableValue}>{item.nombre}</Text>
         </View>
       </View>
     </View>
@@ -69,63 +73,63 @@ const AsistenciaScreen = ({ navigation }) => {
         </TouchableOpacity>
       </Appbar.Header>
 
-      <Text style={styles.title}>Asistencias</Text>
+      <Text style={styles.title}>Estudiantes</Text>
       <FlatList
         data={observaciones}
         renderItem={renderObservacion}
-        keyExtractor={item => item.id_asistencia.toString()}
+        keyExtractor={item => item.id_estudiante.toString()}
         contentContainerStyle={styles.list}
       />
 
       {menuVisible && (
-    <View style={styles.overlay}>
-    <View style={styles.menu}>
-      <TouchableOpacity
-        style={styles.menuItem}
-        onPress={() => navigation.navigate('Home')}>
-        <Text>Inicio</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.menuItem}
-        onPress={() => navigation.navigate('Estudiantes')}>
-        <Text>Estudiantes</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.menuItem}
-        onPress={() => navigation.navigate('Perfil')}>
-        <Text>Perfil</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.menuItem}
-        onPress={() => navigation.navigate('Observaciones')}>
-        <Text>Profesores</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.menuItem}
-        onPress={() => navigation.navigate('Asistencia')}>
-        <Text>Asistencia</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.menuItem}
-        onPress={() => navigation.navigate('Materia')}>
-        <Text>Materias</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.menuItem}
-        onPress={() => navigation.navigate('comportamientos')}>
-        <Text>Comportamiento</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.menuItem}
-        onPress={() => navigation.navigate('Codigos')}>
-        <Text>Codigos</Text>
-      </TouchableOpacity>
-  
-      <TouchableOpacity style={styles.closeButton} onPress={toggleMenu}>
-        <Text style={styles.closeButtonText}>Cerrar</Text>
-      </TouchableOpacity>
-    </View>
-  </View>
+         <View style={styles.overlay}>
+         <View style={styles.menu}>
+           <TouchableOpacity
+             style={styles.menuItem}
+             onPress={() => navigation.navigate('Home')}>
+             <Text>Inicio</Text>
+           </TouchableOpacity>
+           <TouchableOpacity
+             style={styles.menuItem}
+             onPress={() => navigation.navigate('Estudiantes')}>
+             <Text>Estudiantes</Text>
+           </TouchableOpacity>
+           <TouchableOpacity
+             style={styles.menuItem}
+             onPress={() => navigation.navigate('Perfil')}>
+             <Text>Perfil</Text>
+           </TouchableOpacity>
+           <TouchableOpacity
+             style={styles.menuItem}
+             onPress={() => navigation.navigate('Observaciones')}>
+             <Text>Profesores</Text>
+           </TouchableOpacity>
+           <TouchableOpacity
+             style={styles.menuItem}
+             onPress={() => navigation.navigate('Asistencia')}>
+             <Text>Asistencia</Text>
+           </TouchableOpacity>
+           <TouchableOpacity
+             style={styles.menuItem}
+             onPress={() => navigation.navigate('Materia')}>
+             <Text>Materias</Text>
+           </TouchableOpacity>
+           <TouchableOpacity
+             style={styles.menuItem}
+             onPress={() => navigation.navigate('comportamientos')}>
+             <Text>Comportamiento</Text>
+           </TouchableOpacity>
+           <TouchableOpacity
+             style={styles.menuItem}
+             onPress={() => navigation.navigate('Codigos')}>
+             <Text>Codigos</Text>
+           </TouchableOpacity>
+       
+           <TouchableOpacity style={styles.closeButton} onPress={toggleMenu}>
+             <Text style={styles.closeButtonText}>Cerrar</Text>
+           </TouchableOpacity>
+         </View>
+       </View>
       )}
     </View>
   );
@@ -231,4 +235,4 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
-export default AsistenciaScreen;
+export default EstudianteScreen;

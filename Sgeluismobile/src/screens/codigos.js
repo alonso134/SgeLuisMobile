@@ -1,64 +1,68 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image, Modal } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, FlatList, Alert, TouchableOpacity, Image } from 'react-native';
 import { Appbar } from 'react-native-paper';
+import * as Constantes from '../utils/constantes';
 
-const Codigos = ({ navigation }) => {
+const CodigosScreen = ({ navigation }) => {
+  const ip = Constantes.IP;
   const [menuVisible, setMenuVisible] = useState(false);
-  const [dropdownVisible, setDropdownVisible] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState('Códigos Negativos');
+  const [observaciones, setCodigos] = useState([]);
 
   const toggleMenu = () => setMenuVisible(!menuVisible);
-  const toggleDropdown = () => setDropdownVisible(!dropdownVisible);
 
-  const renderDetailContent = () => {
-    if (selectedCategory === 'Códigos Negativos') {
-      return (
-        <View style={styles.contentContainer}>
-          <View style={styles.content}>
-            <View style={styles.detailContainer}>
-              <Text style={styles.detailTitle}>Tipo:</Text>
-              <Text style={styles.detailText}>                  Leve</Text>
-            </View>
-            <View style={styles.detailContainer}>
-              <Text style={styles.detailTitle}>Código:</Text>
-              <Text style={styles.detailText}>                  Aplica lenguaje soez</Text>
-            </View>
-            <View style={styles.detailContainer}>
-              <Text style={styles.detailTitle}>Docente:</Text>
-              <Text style={styles.detailText}>                  Karina Hernandez</Text>
-            </View>
-            <View style={styles.detailContainer}>
-              <Text style={styles.detailTitle}>Fecha:</Text>
-              <Text style={styles.detailText}>                  20/08/2024</Text>
-            </View>
-          </View>
-        </View>
-      );
-    } else if (selectedCategory === 'Códigos Positivos') {
-      return (
-        <View style={styles.contentContainer}>
-          <View style={styles.content}>
-            <View style={styles.detailContainer}>
-              <Text style={styles.detailTitle}>Tipo:</Text>
-              <Text style={styles.detailText}>                 Positivo</Text>
-            </View>
-            <View style={styles.detailContainer}>
-              <Text style={styles.detailTitle}>Código:</Text>
-              <Text style={styles.detailText}>                  Cumplió con la tarea</Text>
-            </View>
-            <View style={styles.detailContainer}>
-              <Text style={styles.detailTitle}>Docente:</Text>
-              <Text style={styles.detailText}>                  Wilfredo Granados</Text>
-            </View>
-            <View style={styles.detailContainer}>
-              <Text style={styles.detailTitle}>Fecha:</Text>
-              <Text style={styles.detailText}>                  20/08/2024</Text>
-            </View>
-          </View>
-        </View>
-      );
+  useEffect(() => {
+    fetchcodigos();
+  }, []);
+
+  const fetchcodigos = async () => {
+    try {
+      const response = await fetch(`${ip}/EXPO2024/api/services/admin/codigo.php?action=readAll`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      });
+
+      const data = await response.json();
+      console.log('Respuesta de la API:', data); // Log para verificar la respuesta
+      if (data.status === 1) {
+        setCodigos(data.dataset);
+      } else {
+        console.error(data.error);
+        setCodigos([]); // Asegurarse de que observaciones es un array
+      }
+    } catch (error) {
+      console.error('Error al obtener los codigos:', error);
+      setCodigos([]); // Asegurarse de que observaciones es un array
     }
   };
+
+  const renderObservacion = ({ item }) => (
+    <View style={styles.content}>
+      <View style={styles.tableContainer}>
+        <View style={styles.tableRow}>
+          <Text style={styles.tableLabel}>Nombre:</Text>
+          <Text style={styles.tableValue}>{item.nombre_estudiante}</Text>
+        </View>
+        <View style={styles.tableRow}>
+          <Text style={styles.tableLabel}>Codigo:</Text>
+          <Text style={styles.tableValue}>{item.codigo}</Text>
+        </View>
+        <View style={styles.tableRow}>
+          <Text style={styles.tableLabel}>Profesor:</Text>
+          <Text style={styles.tableValue}>{item.nombre_profesor}</Text>
+        </View>
+        <View style={styles.tableRow}>
+          <Text style={styles.tableLabel}>Fecha:</Text>
+          <Text style={styles.tableValue}>{item.fecha}</Text>
+        </View>
+        <View style={styles.tableRow}>
+          <Text style={styles.tableLabel}>Descpricion:</Text>
+          <Text style={styles.tableValue}>{item.descripcion_adicional}</Text>
+        </View>
+      </View>
+    </View>
+  );
 
   return (
     <View style={styles.container}>
@@ -69,86 +73,72 @@ const Codigos = ({ navigation }) => {
         </TouchableOpacity>
       </Appbar.Header>
 
-      <View style={styles.dropdownContainer}>
-        <TouchableOpacity onPress={toggleDropdown} style={styles.dropdownButton}>
-          <Text style={styles.dropdownButtonText}>{selectedCategory}</Text>
-          <View style={styles.iconContainer}>
-            <Image source={require('../../assets/menu-icon.png')} style={styles.menuIcon}/>
-            <Image source={require('../../assets/black_arrow.png')} style={styles.arrowIcon}/>
-          </View>
-        </TouchableOpacity>
-      </View>
-
-      {renderDetailContent()}
-
-      <Modal
-        visible={dropdownVisible}
-        transparent={true}
-        animationType="slide"
-        onRequestClose={toggleDropdown}
-      >
-        <View style={styles.modalOverlay}>
-          <View style={styles.modalContent}>
-            <TouchableOpacity
-              style={styles.modalItem}
-              onPress={() => {
-                setSelectedCategory('Códigos Negativos');
-                toggleDropdown();
-              }}
-            >
-              <Text>Códigos Negativos</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.modalItem}
-              onPress={() => {
-                setSelectedCategory('Códigos Positivos');
-                toggleDropdown();
-              }}
-            >
-              <Text>Códigos Positivos</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </Modal>
+      <Text style={styles.title}>Codigos</Text>
+      <FlatList
+        data={observaciones}
+        renderItem={renderObservacion}
+        keyExtractor={item => item.id_comportamiento_estudiante.toString()}
+        contentContainerStyle={styles.list}
+      />
 
       {menuVisible && (
-        <View style={styles.overlay}>
-          <View style={styles.menu}>
-            <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Home')}>
-              <Text>Inicio</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('MateriasScreen')}>
-              <Text>Materias</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Perfil')}>
-              <Text>Perfil</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Observaciones')}>
-              <Text>Observaciones</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Ausencias')}>
-              <Text>Ausencias</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Tarde')}>
-              <Text>Llegadas Tarde</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Codigos')}>
-              <Text>Codigos</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.closeButton} onPress={toggleMenu}>
-              <Text style={styles.closeButtonText}>Cerrar</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
+         <View style={styles.overlay}>
+         <View style={styles.menu}>
+           <TouchableOpacity
+             style={styles.menuItem}
+             onPress={() => navigation.navigate('Home')}>
+             <Text>Inicio</Text>
+           </TouchableOpacity>
+           <TouchableOpacity
+             style={styles.menuItem}
+             onPress={() => navigation.navigate('Estudiantes')}>
+             <Text>Estudiantes</Text>
+           </TouchableOpacity>
+           <TouchableOpacity
+             style={styles.menuItem}
+             onPress={() => navigation.navigate('Perfil')}>
+             <Text>Perfil</Text>
+           </TouchableOpacity>
+           <TouchableOpacity
+             style={styles.menuItem}
+             onPress={() => navigation.navigate('Observaciones')}>
+             <Text>Profesores</Text>
+           </TouchableOpacity>
+           <TouchableOpacity
+             style={styles.menuItem}
+             onPress={() => navigation.navigate('Asistencia')}>
+             <Text>Asistencia</Text>
+           </TouchableOpacity>
+           <TouchableOpacity
+             style={styles.menuItem}
+             onPress={() => navigation.navigate('Materia')}>
+             <Text>Materias</Text>
+           </TouchableOpacity>
+           <TouchableOpacity
+             style={styles.menuItem}
+             onPress={() => navigation.navigate('comportamientos')}>
+             <Text>Comportamiento</Text>
+           </TouchableOpacity>
+           <TouchableOpacity
+             style={styles.menuItem}
+             onPress={() => navigation.navigate('Codigos')}>
+             <Text>Codigos</Text>
+           </TouchableOpacity>
+       
+           <TouchableOpacity style={styles.closeButton} onPress={toggleMenu}>
+             <Text style={styles.closeButtonText}>Cerrar</Text>
+           </TouchableOpacity>
+         </View>
+       </View>
       )}
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F0FFFF',
+    backgroundColor: '#F0F0F0',
   },
   appBar: {
     backgroundColor: '#120851',
@@ -166,69 +156,42 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   menuIcon: {
-    width: 45,
-    height: 45,
+    width: 35,
+    height: 35,
   },
-  arrowIcon: {
-    width: 30,
-    height: 30,
-    marginLeft: 5,
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginVertical: 16,
   },
-  dropdownContainer: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 5,
-    marginBottom: 20,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: 10,
-    marginTop: 30,
-  },
-  contentContainer: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 20,
+  list: {
+    paddingHorizontal: 16,
   },
   content: {
     backgroundColor: '#FFFFFF',
     borderRadius: 10,
-    padding: 30,
+    padding: 16,
+    marginVertical: 8,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
+    shadowOpacity: 0.1,
     shadowRadius: 3.84,
     elevation: 5,
-    marginTop: 50,
-    marginBottom: 50,
-    minHeight: 400,
   },
-  dropdownButton: {
+  tableContainer: {
+    marginBottom: 8,
+  },
+  tableRow: {
     flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    width: '100%',
+    marginVertical: 4,
   },
-  dropdownButtonText: {
-    fontSize: 18,
-  },
-  iconContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  detailContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 10,
-    paddingHorizontal: 20,
-  },
-  detailTitle: {
+  tableLabel: {
     fontWeight: 'bold',
-    fontSize: 18,
+    flex: 1,
   },
-  detailText: {
-    fontSize: 18,
+  tableValue: {
+    flex: 2,
   },
   overlay: {
     ...StyleSheet.absoluteFillObject,
@@ -259,26 +222,17 @@ const styles = StyleSheet.create({
     color: 'red',
     fontSize: 16,
   },
-  modalOverlay: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  logoutButton: {
+    backgroundColor: '#000080',
+    padding: 10,
+    borderRadius: 5,
+    marginTop: 10,
   },
-  modalContent: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: 10,
-    padding: 20,
-    width: 250,
-    alignItems: 'center',
-  },
-  modalItem: {
-    paddingVertical: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: '#CCCCCC',
-    width: '100%',
-    alignItems: 'center',
+  logoutButtonText: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
 });
-
-export default Codigos;
+export default CodigosScreen;

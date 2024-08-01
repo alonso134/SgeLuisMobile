@@ -39,54 +39,54 @@ const Comportamientos = ({ navigation }) => {
       </View>
 
       {menuVisible && (
-               <View style={styles.overlay}>
-               <View style={styles.menu}>
-                 <TouchableOpacity
-                   style={styles.menuItem}
-                   onPress={() => navigation.navigate('Home')}>
-                   <Text>Inicio</Text>
-                 </TouchableOpacity>
-                 <TouchableOpacity
-                   style={styles.menuItem}
-                   onPress={() => navigation.navigate('Estudiantes')}>
-                   <Text>Estudiantes</Text>
-                 </TouchableOpacity>
-                 <TouchableOpacity
-                   style={styles.menuItem}
-                   onPress={() => navigation.navigate('Perfil')}>
-                   <Text>Perfil</Text>
-                 </TouchableOpacity>
-                 <TouchableOpacity
-                   style={styles.menuItem}
-                   onPress={() => navigation.navigate('Observaciones')}>
-                   <Text>Profesores</Text>
-                 </TouchableOpacity>
-                 <TouchableOpacity
-                   style={styles.menuItem}
-                   onPress={() => navigation.navigate('Asistencia')}>
-                   <Text>Asistencia</Text>
-                 </TouchableOpacity>
-                 <TouchableOpacity
-                   style={styles.menuItem}
-                   onPress={() => navigation.navigate('MateriasScreen')}>
-                   <Text>Materias</Text>
-                 </TouchableOpacity>
-                 <TouchableOpacity
-                   style={styles.menuItem}
-                   onPress={() => navigation.navigate('MateriasScreen')}>
-                   <Text>Comportamiento</Text>
-                 </TouchableOpacity>
-                 <TouchableOpacity
-                   style={styles.menuItem}
-                   onPress={() => navigation.navigate('Codigos')}>
-                   <Text>Codigos</Text>
-                 </TouchableOpacity>
-             
-                 <TouchableOpacity style={styles.closeButton} onPress={toggleMenu}>
-                   <Text style={styles.closeButtonText}>Cerrar</Text>
-                 </TouchableOpacity>
-               </View>
-             </View>
+              <View style={styles.overlay}>
+              <View style={styles.menu}>
+                <TouchableOpacity
+                  style={styles.menuItem}
+                  onPress={() => navigation.navigate('Home')}>
+                  <Text>Inicio</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.menuItem}
+                  onPress={() => navigation.navigate('Estudiantes')}>
+                  <Text>Estudiantes</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.menuItem}
+                  onPress={() => navigation.navigate('Perfil')}>
+                  <Text>Perfil</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.menuItem}
+                  onPress={() => navigation.navigate('Observaciones')}>
+                  <Text>Profesores</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.menuItem}
+                  onPress={() => navigation.navigate('Asistencia')}>
+                  <Text>Asistencia</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.menuItem}
+                  onPress={() => navigation.navigate('Materia')}>
+                  <Text>Materias</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.menuItem}
+                  onPress={() => navigation.navigate('comportamientos')}>
+                  <Text>Comportamiento</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.menuItem}
+                  onPress={() => navigation.navigate('Codigos')}>
+                  <Text>Codigos</Text>
+                </TouchableOpacity>
+            
+                <TouchableOpacity style={styles.closeButton} onPress={toggleMenu}>
+                  <Text style={styles.closeButtonText}>Cerrar</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
       )}
     </View>
   );

@@ -3,17 +3,14 @@ import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { Appbar } from 'react-native-paper';
 
 
-const Estudiantes = ({ navigation }) => {
+const Materia= ({ navigation }) => {
 
     const [menuVisible, setMenuVisible] = useState(false);
 
   const items = [
-    { text: 'Asistencia', image: require('../img/asistencia.png'), route: 'Asistencia' },
-    { text: 'Grados', image: require('../img/grado.png'), route: 'Grados' },
-    { text: 'Estudiantes', image: require('../img/estu.png'), route: 'estudiante' },
-    { text: 'Inscripcion', image: require('../img/inscipcion.png'), route: 'Inscripcion' },
-    { text: 'Conducta', image: require('../img/conducta.png'), route: 'Codigos' },
     { text: 'Notas', image: require('../img/notas.png'), route: 'Notas' },
+    { text: 'Grados', image: require('../img/grado.png'), route: 'Grados' },
+    { text: 'Materias', image: require('../img/asignotas.png'), route: 'Materia' },
   ];
 
   const handlePress = (item) => {
@@ -198,5 +195,5 @@ const styles = StyleSheet.create({
     },
   });
 
-export default Estudiantes;
+export default Materia;
 

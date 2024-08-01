@@ -7,7 +7,7 @@ const Home = ({ navigation }) => {
 
   const items = [
     { text: 'Estudiantes', image: require('../img/estu.png'), route: 'Estudiantes' },
-    { text: 'Materias', image: require('../img/mate.png'), route: 'Materias' },
+    { text: 'Materias', image: require('../img/mate.png'), route: 'Materia' },
     { text: 'Codigos', image: require('../img/codigos.png'), route: 'Codigos' },
     { text: 'Asistencia', image: require('../img/asistencia.png'), route: 'Asistencia' },
     { text: 'Conducta', image: require('../img/conducta.png'), route: 'comportamientos' },
@@ -42,54 +42,54 @@ const Home = ({ navigation }) => {
       </View>
 
       {menuVisible && (
-        <View style={styles.overlay}>
-          <View style={styles.menu}>
-            <TouchableOpacity
-              style={styles.menuItem}
-              onPress={() => navigation.navigate('Home')}>
-              <Text>Inicio</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.menuItem}
-              onPress={() => navigation.navigate('Estudiantes')}>
-              <Text>Estudiantes</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.menuItem}
-              onPress={() => navigation.navigate('Perfil')}>
-              <Text>Perfil</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.menuItem}
-              onPress={() => navigation.navigate('Observaciones')}>
-              <Text>Profesores</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.menuItem}
-              onPress={() => navigation.navigate('Asistencia')}>
-              <Text>Asistencia</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.menuItem}
-              onPress={() => navigation.navigate('MateriasScreen')}>
-              <Text>Materias</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.menuItem}
-              onPress={() => navigation.navigate('MateriasScreen')}>
-              <Text>Comportamiento</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.menuItem}
-              onPress={() => navigation.navigate('Codigos')}>
-              <Text>Codigos</Text>
-            </TouchableOpacity>
-        
-            <TouchableOpacity style={styles.closeButton} onPress={toggleMenu}>
-              <Text style={styles.closeButtonText}>Cerrar</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
+       <View style={styles.overlay}>
+       <View style={styles.menu}>
+         <TouchableOpacity
+           style={styles.menuItem}
+           onPress={() => navigation.navigate('Home')}>
+           <Text>Inicio</Text>
+         </TouchableOpacity>
+         <TouchableOpacity
+           style={styles.menuItem}
+           onPress={() => navigation.navigate('Estudiantes')}>
+           <Text>Estudiantes</Text>
+         </TouchableOpacity>
+         <TouchableOpacity
+           style={styles.menuItem}
+           onPress={() => navigation.navigate('Perfil')}>
+           <Text>Perfil</Text>
+         </TouchableOpacity>
+         <TouchableOpacity
+           style={styles.menuItem}
+           onPress={() => navigation.navigate('Observaciones')}>
+           <Text>Profesores</Text>
+         </TouchableOpacity>
+         <TouchableOpacity
+           style={styles.menuItem}
+           onPress={() => navigation.navigate('Asistencia')}>
+           <Text>Asistencia</Text>
+         </TouchableOpacity>
+         <TouchableOpacity
+           style={styles.menuItem}
+           onPress={() => navigation.navigate('Materia')}>
+           <Text>Materias</Text>
+         </TouchableOpacity>
+         <TouchableOpacity
+           style={styles.menuItem}
+           onPress={() => navigation.navigate('comportamientos')}>
+           <Text>Comportamiento</Text>
+         </TouchableOpacity>
+         <TouchableOpacity
+           style={styles.menuItem}
+           onPress={() => navigation.navigate('Codigos')}>
+           <Text>Codigos</Text>
+         </TouchableOpacity>
+     
+         <TouchableOpacity style={styles.closeButton} onPress={toggleMenu}>
+           <Text style={styles.closeButtonText}>Cerrar</Text>
+         </TouchableOpacity>
+       </View>
+     </View>
       )}
     </View>
 

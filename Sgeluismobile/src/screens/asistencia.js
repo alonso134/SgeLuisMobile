@@ -71,12 +71,12 @@ const Asistencia = ({ navigation }) => {
                   </TouchableOpacity>
                   <TouchableOpacity
                     style={styles.menuItem}
-                    onPress={() => navigation.navigate('MateriasScreen')}>
+                    onPress={() => navigation.navigate('Materia')}>
                     <Text>Materias</Text>
                   </TouchableOpacity>
                   <TouchableOpacity
                     style={styles.menuItem}
-                    onPress={() => navigation.navigate('MateriasScreen')}>
+                    onPress={() => navigation.navigate('comportamientos')}>
                     <Text>Comportamiento</Text>
                   </TouchableOpacity>
                   <TouchableOpacity
