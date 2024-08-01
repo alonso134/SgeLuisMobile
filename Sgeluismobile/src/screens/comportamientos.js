@@ -58,7 +58,7 @@ const Comportamientos = ({ navigation }) => {
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={styles.menuItem}
-                  onPress={() => navigation.navigate('Observaciones')}>
+                  onPress={() => navigation.navigate('profesores')}>
                   <Text>Profesores</Text>
                 </TouchableOpacity>
                 <TouchableOpacity

@@ -18,6 +18,8 @@ import comportamientos from './src/screens/comportamientos.js';
 import Comportamiento from './src/screens/Comportamiento.js'; 
 import Asistencias from './src/screens/Asistencias.js'; 
 import Materia from './src/screens/Materia.js'; 
+import materia from './src/screens/materias.js'; 
+import profesores from './src/screens/profesores.js'; 
 import Perfil from './src/screens/perfil.js';
 
 export default function App() {
@@ -47,6 +49,8 @@ export default function App() {
         <Stack.Screen name="Institución" component={Institución} />
         <Stack.Screen name="Notas" component={Notas} />
         <Stack.Screen name="Materia" component={Materia} />
+        <Stack.Screen name="materia" component={materia} />
+        <Stack.Screen name="profesores" component={profesores} />
         <Stack.Screen name="Perfil" component={Perfil} />
       </Stack.Navigator>
     </NavigationContainer>

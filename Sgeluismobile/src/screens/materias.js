@@ -3,20 +3,20 @@ import { View, Text, StyleSheet, FlatList, Alert, TouchableOpacity, Image } from
 import { Appbar } from 'react-native-paper';
 import * as Constantes from '../utils/constantes';
 
-const ObservacionesScreen = ({ navigation }) => {
+const MateriasScreen = ({ navigation }) => {
   const ip = Constantes.IP;
   const [menuVisible, setMenuVisible] = useState(false);
-  const [observaciones, setObservaciones] = useState([]);
+  const [observaciones, setEstudiantes] = useState([]);
 
   const toggleMenu = () => setMenuVisible(!menuVisible);
 
   useEffect(() => {
-    fetchObservaciones();
+    fetchEstudiantes();
   }, []);
 
-  const fetchObservaciones = async () => {
+  const fetchEstudiantes = async () => {
     try {
-      const response = await fetch(`${ip}/EXPO2024/api/services/admin/observaciones.php?action=readAll`, {
+      const response = await fetch(`${ip}/EXPO2024/api/services/admin/materias.php?action=readAll`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
@@ -26,14 +26,14 @@ const ObservacionesScreen = ({ navigation }) => {
       const data = await response.json();
       console.log('Respuesta de la API:', data); // Log para verificar la respuesta
       if (data.status === 1) {
-        setObservaciones(data.dataset);
+        setEstudiantes(data.dataset);
       } else {
         console.error(data.error);
-        setObservaciones([]); // Asegurarse de que observaciones es un array
+        setEstudiantes([]); // Asegurarse de que observaciones es un array
       }
     } catch (error) {
-      console.error('Error al obtener las observaciones:', error);
-      setObservaciones([]); // Asegurarse de que observaciones es un array
+      console.error('Error al obtener los estudiantes:', error);
+      setEstudiantes([]); // Asegurarse de que observaciones es un array
     }
   };
 
@@ -41,20 +41,16 @@ const ObservacionesScreen = ({ navigation }) => {
     <View style={styles.content}>
       <View style={styles.tableContainer}>
         <View style={styles.tableRow}>
-          <Text style={styles.tableLabel}>Fecha:</Text>
-          <Text style={styles.tableValue}>{item.fecha}</Text>
+          <Text style={styles.tableLabel}>Materia:</Text>
+          <Text style={styles.tableValue}>{item.nombre}</Text>
         </View>
         <View style={styles.tableRow}>
-          <Text style={styles.tableLabel}>Estudiante:</Text>
-          <Text style={styles.tableValue}>{item.nombre_estudiante}</Text>
+          <Text style={styles.tableLabel}>Descripcion:</Text>
+          <Text style={styles.tableValue}>{item.descripcion}</Text>
         </View>
         <View style={styles.tableRow}>
           <Text style={styles.tableLabel}>Profesor:</Text>
           <Text style={styles.tableValue}>{item.nombre_profesor}</Text>
-        </View>
-        <View style={styles.tableRow}>
-          <Text style={styles.tableLabel}>Observación:</Text>
-          <Text style={styles.tableValue}>{item.observacion}</Text>
         </View>
       </View>
     </View>
@@ -69,63 +65,63 @@ const ObservacionesScreen = ({ navigation }) => {
         </TouchableOpacity>
       </Appbar.Header>
 
-      <Text style={styles.title}>Observaciones</Text>
+      <Text style={styles.title}>Materias</Text>
       <FlatList
         data={observaciones}
         renderItem={renderObservacion}
-        keyExtractor={item => item.id_observacion.toString()}
+        keyExtractor={item => item.id_materia.toString()}
         contentContainerStyle={styles.list}
       />
 
       {menuVisible && (
-     <View style={styles.overlay}>
-     <View style={styles.menu}>
-       <TouchableOpacity
-         style={styles.menuItem}
-         onPress={() => navigation.navigate('Home')}>
-         <Text>Inicio</Text>
-       </TouchableOpacity>
-       <TouchableOpacity
-         style={styles.menuItem}
-         onPress={() => navigation.navigate('Estudiantes')}>
-         <Text>Estudiantes</Text>
-       </TouchableOpacity>
-       <TouchableOpacity
-         style={styles.menuItem}
-         onPress={() => navigation.navigate('Perfil')}>
-         <Text>Perfil</Text>
-       </TouchableOpacity>
-       <TouchableOpacity
-         style={styles.menuItem}
-         onPress={() => navigation.navigate('profesores')}>
-         <Text>Profesores</Text>
-       </TouchableOpacity>
-       <TouchableOpacity
-         style={styles.menuItem}
-         onPress={() => navigation.navigate('Asistencia')}>
-         <Text>Asistencia</Text>
-       </TouchableOpacity>
-       <TouchableOpacity
-         style={styles.menuItem}
-         onPress={() => navigation.navigate('Materia')}>
-         <Text>Materias</Text>
-       </TouchableOpacity>
-       <TouchableOpacity
-         style={styles.menuItem}
-         onPress={() => navigation.navigate('comportamientos')}>
-         <Text>Comportamiento</Text>
-       </TouchableOpacity>
-       <TouchableOpacity
-         style={styles.menuItem}
-         onPress={() => navigation.navigate('Codigos')}>
-         <Text>Codigos</Text>
-       </TouchableOpacity>
-   
-       <TouchableOpacity style={styles.closeButton} onPress={toggleMenu}>
-         <Text style={styles.closeButtonText}>Cerrar</Text>
-       </TouchableOpacity>
-     </View>
-   </View>
+         <View style={styles.overlay}>
+         <View style={styles.menu}>
+           <TouchableOpacity
+             style={styles.menuItem}
+             onPress={() => navigation.navigate('Home')}>
+             <Text>Inicio</Text>
+           </TouchableOpacity>
+           <TouchableOpacity
+             style={styles.menuItem}
+             onPress={() => navigation.navigate('Estudiantes')}>
+             <Text>Estudiantes</Text>
+           </TouchableOpacity>
+           <TouchableOpacity
+             style={styles.menuItem}
+             onPress={() => navigation.navigate('Perfil')}>
+             <Text>Perfil</Text>
+           </TouchableOpacity>
+           <TouchableOpacity
+             style={styles.menuItem}
+             onPress={() => navigation.navigate('Observaciones')}>
+             <Text>Profesores</Text>
+           </TouchableOpacity>
+           <TouchableOpacity
+             style={styles.menuItem}
+             onPress={() => navigation.navigate('Asistencia')}>
+             <Text>Asistencia</Text>
+           </TouchableOpacity>
+           <TouchableOpacity
+             style={styles.menuItem}
+             onPress={() => navigation.navigate('Materia')}>
+             <Text>Materias</Text>
+           </TouchableOpacity>
+           <TouchableOpacity
+             style={styles.menuItem}
+             onPress={() => navigation.navigate('comportamientos')}>
+             <Text>Comportamiento</Text>
+           </TouchableOpacity>
+           <TouchableOpacity
+             style={styles.menuItem}
+             onPress={() => navigation.navigate('Codigos')}>
+             <Text>Codigos</Text>
+           </TouchableOpacity>
+       
+           <TouchableOpacity style={styles.closeButton} onPress={toggleMenu}>
+             <Text style={styles.closeButtonText}>Cerrar</Text>
+           </TouchableOpacity>
+         </View>
+       </View>
       )}
     </View>
   );
@@ -231,4 +227,4 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
-export default ObservacionesScreen;
+export default MateriasScreen;
