@@ -1,21 +1,89 @@
-import React, { useState } from 'react';
+import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Image, TouchableOpacity, Alert } from 'react-native';
-import Input from '../components/Inputs/Input';
+import { useEffect, useState } from 'react';
+import Input from '../components/Inputs/Input'
 import Buttons from '../components/Buttons/Button';
+import * as Constantes from '../utils/constantes'
 
 export default function Sesion({ navigation }) {
-  const [isContra, setIsContra] = useState(true);
-  const [usuario, setUsuario] = useState('');
-  const [contrasenia, setContrasenia] = useState('');
+  const ip = Constantes.IP;
 
-  const handlerLogin = () => {
-   
-      navigation.navigate('carga'); 
+  const [isContra, setIsContra] = useState(true)
+  const [usuario, setUsuario] = useState('')
+  const [contrasenia, setContrasenia] = useState('')
+
+  const validarSesion = async () => {
+    try {
+      const response = await fetch(`${ip}/EXPO2024/api/services/admin/profesores.php?action=getUser`, {
+        method: 'GET'
+      });
+  
+      const data = await response.json();
+  
+      if (data.status === 1) {
+        cerrarSesion();
+        console.log("Se eliminó la sesión")
+      } else {
+        console.log("No hay sesión activa")
+        return
+      }
+    } catch (error) {
+      console.error(error);
+      Alert.alert('Error', 'Ocurrió un error al validar la sesión');
+    }
+  }
+
+  const cerrarSesion = async () => {
+    try {
+      const response = await fetch(`${ip}/EXPO2024/api/services/admin/profesores.php?action=logOut`, {
+        method: 'GET'
+      });
+
+      const data = await response.json();
+
+      if (data.status) {
+        console.log("Sesión Finalizada")
+      } else {
+        console.log('No se pudo eliminar la sesión')
+      }
+    } catch (error) {
+      console.error(error, "Error desde Catch");
+      Alert.alert('Error', 'Ocurrió un error al iniciar sesión con bryancito');
+    }
+  }
+
+  const handlerLogin = async () => {
+    try {
+      const formData = new FormData();
+      formData.append('alias', usuario);
+      formData.append('clave', contrasenia);
+
+      const response = await fetch(`${ip}/EXPO2024/api/services/admin/profesores.php?action=logIn`, {
+        method: 'POST',
+        body: formData
+      });
+
+      const data = await response.json();
+
+      if (data.status) {
+        setContrasenia('')
+        setUsuario('')
+        navigation.navigate('carga');
+      } else {
+        console.log(data);
+        Alert.alert('Error sesión', data.error);
+      }
+    } catch (error) {
+      console.error(error, "Error desde Catch");
+      Alert.alert('Error', 'Ocurrió un error al iniciar sesión');
+    }
   };
 
-  const irRegistrar = () => {
+  const irRegistrar = async () => {
     navigation.navigate('SignUp');
   };
+
+  useEffect(() => { validarSesion() }, [])
 
   return (
     <View style={styles.container}>
@@ -33,12 +101,11 @@ export default function Sesion({ navigation }) {
         placeHolder='Contraseña'
         setValor={contrasenia}
         setTextChange={setContrasenia}
-        contra={isContra}
-      />
+        contra={isContra} />
       <Buttons
         textoBoton='Iniciar Sesión'
-        accionBoton={handlerLogin}
-      />
+        accionBoton={handlerLogin} />
+      
     </View>
   );
 }
@@ -46,19 +113,22 @@ export default function Sesion({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#008B8B',
+    backgroundColor: '#778DA9',
     alignItems: 'center',
     justifyContent: 'center',
   },
   texto: {
-    color: '#FFFEFE',
-    fontWeight: '900',
-    fontSize: 20,
+    color: '#322C2B', fontWeight: '900',
+    fontSize: 20
   },
-
+  textRegistrar: {
+    color: '#322C2B', fontWeight: '700',
+    fontSize: 18,
+    marginTop: 10
+  },
   image: {
-    width: 150,
-    height: 250,
-    marginBottom: 10,
+    width: 200,
+    height: 200,
+    marginBottom: 10
   },
 });

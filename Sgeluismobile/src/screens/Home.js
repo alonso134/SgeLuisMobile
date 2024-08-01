@@ -6,32 +6,16 @@ const Home = ({ navigation }) => {
   const [menuVisible, setMenuVisible] = useState(false);
 
   const items = [
-    { text: 'Codigos', image: require('../img/codigo.jpg') },
-    { text: 'Observaciones', image: require('../img/observaciones.jpg') },
-    { text: 'Ausencias', image: require('../img/ausencias.jpg') },
-    { text: 'Llegadas Tarde clase', image: require('../img/tardes.jpg') },
+    { text: 'Estudiantes', image: require('../img/estu.png'), route: 'Estudiantes' },
+    { text: 'Materias', image: require('../img/mate.png'), route: 'Materias' },
+    { text: 'Codigos', image: require('../img/codigos.png'), route: 'Codigos' },
+    { text: 'Asistencia', image: require('../img/asistencia.png'), route: 'Asistencia' },
+    { text: 'Conducta', image: require('../img/conducta.png'), route: 'comportamientos' },
   ];
 
   const handlePress = (item) => {
-    switch (item.text) {
-      case 'Ausencias':
-        navigation.navigate('Ausencias');
-        break;
-      case 'Observaciones':
-        navigation.navigate('Observaciones'); // Asegúrate de que coincida con el nombre en Stack.Navigator
-        break;
-      case 'Llegadas Tarde clase':
-        navigation.navigate('Tarde');
-        break;
-      case 'Codigos':
-        navigation.navigate('Codigos');
-        break;
-      default:
-        console.log(`${item.text} presionado`);
-        break;
-    }
+    navigation.navigate(item.route);
   };
-  
 
   const toggleMenu = () => setMenuVisible(!menuVisible);
 
@@ -44,14 +28,14 @@ const Home = ({ navigation }) => {
         </TouchableOpacity>
       </Appbar.Header>
       <View style={styles.content}>
-        <View style={styles.titleContainer}>
-          <Text style={styles.title}>Inicio</Text>
-        </View>
         <View style={styles.table}>
           {items.map((item, index) => (
             <TouchableOpacity key={index} style={styles.cell} onPress={() => handlePress(item)}>
               <Image source={item.image} style={styles.image} />
               <Text style={styles.text}>{item.text}</Text>
+              <View style={styles.button}>
+                <Text style={styles.buttonText}>Ver Completo</Text>
+              </View>
             </TouchableOpacity>
           ))}
         </View>
@@ -60,44 +44,62 @@ const Home = ({ navigation }) => {
       {menuVisible && (
         <View style={styles.overlay}>
           <View style={styles.menu}>
-            <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Home')}>
+            <TouchableOpacity
+              style={styles.menuItem}
+              onPress={() => navigation.navigate('Home')}>
               <Text>Inicio</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('MateriasScreen')}>
-              <Text>Materias</Text>
+            <TouchableOpacity
+              style={styles.menuItem}
+              onPress={() => navigation.navigate('Estudiantes')}>
+              <Text>Estudiantes</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Perfil')}>
+            <TouchableOpacity
+              style={styles.menuItem}
+              onPress={() => navigation.navigate('Perfil')}>
               <Text>Perfil</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Observaciones')}>
-              <Text>Observaciones</Text>
+            <TouchableOpacity
+              style={styles.menuItem}
+              onPress={() => navigation.navigate('Observaciones')}>
+              <Text>Profesores</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Ausencias')}>
-              <Text>Ausencias</Text>
+            <TouchableOpacity
+              style={styles.menuItem}
+              onPress={() => navigation.navigate('Asistencia')}>
+              <Text>Asistencia</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Tarde')}>
-              <Text>Llegadas Tarde</Text>
+            <TouchableOpacity
+              style={styles.menuItem}
+              onPress={() => navigation.navigate('MateriasScreen')}>
+              <Text>Materias</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Codigos')}>
+            <TouchableOpacity
+              style={styles.menuItem}
+              onPress={() => navigation.navigate('MateriasScreen')}>
+              <Text>Comportamiento</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.menuItem}
+              onPress={() => navigation.navigate('Codigos')}>
               <Text>Codigos</Text>
             </TouchableOpacity>
+        
             <TouchableOpacity style={styles.closeButton} onPress={toggleMenu}>
               <Text style={styles.closeButtonText}>Cerrar</Text>
             </TouchableOpacity>
           </View>
         </View>
       )}
-
     </View>
+
   );
 };
-
-
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F0FFFF',
+    backgroundColor: '#FFFFFF',
   },
   appBar: {
     backgroundColor: '#120851',
@@ -124,20 +126,18 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 20,
   },
-  titleContainer: {
-    alignItems: 'center',
-    marginBottom: 20,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-  },
   table: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-around',
     width: '100%',
-    backgroundColor: '#FFFFFF',
+    padding: 20,
+  },
+  cell: {
+    alignItems: 'center',
+    margin: 15,
+    width: '40%',
+    backgroundColor: '#F0F0F0',
     padding: 20,
     borderRadius: 10,
     shadowColor: '#000',
@@ -146,21 +146,25 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5,
   },
-  cell: {
-    alignItems: 'center',
-    margin: 15,
-    width: '40%',
-  },
   image: {
-    width: 80,
-    height: 90,
-    borderRadius: 40,
-    backgroundColor: '#D3D3D3',
+    width: 50,
+    height: 50,
+    marginBottom: 10,
   },
   text: {
-    marginTop: 10,
     fontSize: 18,
     textAlign: 'center',
+  },
+  button: {
+    marginTop: 10,
+    backgroundColor: '#1E90FF',
+    paddingVertical: 5,
+    paddingHorizontal: 15,
+    borderRadius: 5,
+  },
+  buttonText: {
+    color: '#FFFFFF',
+    fontSize: 14,
   },
   overlay: {
     ...StyleSheet.absoluteFillObject,
@@ -194,3 +198,4 @@ const styles = StyleSheet.create({
 });
 
 export default Home;
+

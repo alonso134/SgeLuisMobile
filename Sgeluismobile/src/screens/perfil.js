@@ -1,12 +1,30 @@
 import React, { useState } from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { Appbar } from 'react-native-paper';
+import * as Constantes from '../utils/constantes';
+
 
 const Perfil = ({ navigation }) => {
-
   const [menuVisible, setMenuVisible] = useState(false);
+  const ip = Constantes.IP;
 
   const toggleMenu = () => setMenuVisible(!menuVisible);
+
+  const handleLogout = async () => {
+    try {
+      const response = await fetch(`${ip}/EXPO2024/api/services/admin/profesores.php?action=logOut`, {
+        method: 'GET'
+      });
+      const data = await response.json();
+      if (data.status) {
+        navigation.navigate('Sesion');
+      } else {
+        Alert.alert('Error', data.error);
+      }
+    } catch (error) {
+      Alert.alert('Error', 'Ocurrió un error al cerrar la sesión');
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -24,53 +42,61 @@ const Perfil = ({ navigation }) => {
           <Text style={styles.profileId}>20220133</Text>
           <Text style={styles.profileName}>Fernando Alonso Martínez Rosales</Text>
           <Text style={styles.profileGrade}>Noveno Grado</Text>
-          <TouchableOpacity style={styles.logoutButton}>
+          <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
             <Text style={styles.logoutButtonText}>Cerrar Sesión</Text>
           </TouchableOpacity>
         </View>
       </View>
 
       {menuVisible && (
-        <View style={styles.overlay}>
-          <View style={styles.menu}>
-            <TouchableOpacity
-              style={styles.menuItem}
-              onPress={() => navigation.navigate('Home')}>
-              <Text>Inicio</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.menuItem}
-              onPress={() => navigation.navigate('MateriasScreen')}>
-              <Text>Materias</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.menuItem}
-              onPress={() => navigation.navigate('Perfil')}>
-              <Text>Perfil</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.menuItem}
-              onPress={() => navigation.navigate('Observaciones')}>
-              <Text>Observaciones</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.menuItem}
-              onPress={() => navigation.navigate('Ausencias')}>
-              <Text>Ausencias</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.menuItem}
-              onPress={() => navigation.navigate('Tarde')}>
-              <Text>Llegadas Tarde</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Codigos')}>
-              <Text>Codigos</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.closeButton} onPress={toggleMenu}>
-              <Text style={styles.closeButtonText}>Cerrar</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
+                <View style={styles.overlay}>
+                <View style={styles.menu}>
+                  <TouchableOpacity
+                    style={styles.menuItem}
+                    onPress={() => navigation.navigate('Home')}>
+                    <Text>Inicio</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={styles.menuItem}
+                    onPress={() => navigation.navigate('Estudiantes')}>
+                    <Text>Estudiantes</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={styles.menuItem}
+                    onPress={() => navigation.navigate('Perfil')}>
+                    <Text>Perfil</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={styles.menuItem}
+                    onPress={() => navigation.navigate('Observaciones')}>
+                    <Text>Profesores</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={styles.menuItem}
+                    onPress={() => navigation.navigate('Asistencia')}>
+                    <Text>Asistencia</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={styles.menuItem}
+                    onPress={() => navigation.navigate('MateriasScreen')}>
+                    <Text>Materias</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={styles.menuItem}
+                    onPress={() => navigation.navigate('MateriasScreen')}>
+                    <Text>Comportamiento</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={styles.menuItem}
+                    onPress={() => navigation.navigate('Codigos')}>
+                    <Text>Codigos</Text>
+                  </TouchableOpacity>
+              
+                  <TouchableOpacity style={styles.closeButton} onPress={toggleMenu}>
+                    <Text style={styles.closeButtonText}>Cerrar</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
       )}
     </View>
   );
