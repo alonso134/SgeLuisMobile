@@ -53,6 +53,12 @@ export default function Sesion({ navigation }) {
   }
 
   const handlerLogin = async () => {
+    // Validación de campos vacíos
+    if (usuario.trim() === '' || contrasenia.trim() === '') {
+      Alert.alert('Error', 'Por favor, complete todos los campos');
+      return;
+    }
+
     try {
       const formData = new FormData();
       formData.append('alias', usuario);
@@ -132,3 +138,4 @@ const styles = StyleSheet.create({
     marginBottom: 10
   },
 });
+
