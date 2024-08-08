@@ -126,7 +126,7 @@ export default function SignUp({ navigation }) {
             formData.append('claveCliente', clave);
             formData.append('confirmarClave', confirmarClave);
 
-            const response = await fetch(`${ip}/EXPO2024/api/services/public/cliente.php?action=signUpMovil`, {
+            const response = await fetch(`${ip}/EXPO2024/api/services/public/profesores.php?action=signUpMovil`, {
                 method: 'POST',
                 body: formData
             });
@@ -149,21 +149,21 @@ return (
             <ScrollView contentContainerStyle={styles.scrollViewStyle}>
                 <Text style={styles.texto}>Registrar Usuario</Text>
                 <Input
-                    placeHolder='Nombre Cliente'
+                    placeHolder='Nombre Profesor'
                     setValor={nombre}
                     setTextChange={setNombre}
                 />
                 <Input
-                    placeHolder='Apellido Cliente'
+                    placeHolder='Apellido Profesor'
                     setValor={apellido}
                     setTextChange={setApellido}
                 />
                 <InputEmail
-                    placeHolder='Email Cliente'
+                    placeHolder='Alias Profesor'
                     setValor={email}
                     setTextChange={setEmail} />
                 <InputMultiline
-                    placeHolder='Dirección Cliente'
+                    placeHolder='Dirección Profesor'
                     setValor={setDireccion}
                     valor={direccion}
                     setTextChange={setDireccion} />
