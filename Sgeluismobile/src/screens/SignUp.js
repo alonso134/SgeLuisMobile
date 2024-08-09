@@ -38,7 +38,7 @@ export default function SignUp({ navigation }) {
             formData.append('claveProfesor', clave);
             formData.append('confirmarClave', confirmarClave);
 
-            const response = await fetch(`${ip}/EXPO2024/api/services/admin/profesores.php?action=signUp`, {
+            const response = await fetch(`${ip}/EXPO2024/api/services/admin/profesores.php?action=signUp`,{
                 method: 'POST',
                 body: formData
             });
