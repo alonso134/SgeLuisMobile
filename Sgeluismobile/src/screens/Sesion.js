@@ -111,7 +111,7 @@ export default function Sesion({ navigation }) {
       <Buttons
         textoBoton='Iniciar Sesión'
         accionBoton={handlerLogin} />
-      
+      <TouchableOpacity onPress={irRegistrar}><Text style={styles.textRegistrar}>¿No tienes cuenta? Regístrate aquí</Text></TouchableOpacity>
     </View>
   );
 }
