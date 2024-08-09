@@ -9,7 +9,7 @@ const Asistencia = ({ navigation }) => {
 
   const items = [
     { text: 'Asistencia', image: require('../img/asistencia.png'), route: 'Asistencias' },
-    { text: 'Ausencia', image: require('../img/ausencia.png'), route: 'Ausencia' },
+    { text: 'Ausencia', image: require('../img/ausencia.png'), route: 'Ausencias' },
     { text: 'Llegadas Tardes', image: require('../img/pendiente.png'), route: 'Tarde' },
     { text: 'Llegadas Tardes institución', image: require('../img/tarde.png'), route: 'Institución' },
   ];
@@ -197,4 +197,3 @@ const styles = StyleSheet.create({
   });
 
 export default Asistencia;
-
