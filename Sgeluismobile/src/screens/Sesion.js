@@ -4,9 +4,6 @@ import { useEffect, useState } from 'react';
 import Input from '../components/Inputs/Input'
 import Buttons from '../components/Buttons/Button';
 import * as Constantes from '../utils/constantes'
-/*recuperacion de contraseña*/
-import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 
 export default function Sesion({ navigation }) {
   const ip = Constantes.IP;
@@ -114,7 +111,7 @@ export default function Sesion({ navigation }) {
       <Buttons
         textoBoton='Iniciar Sesión'
         accionBoton={handlerLogin} />
-      <TouchableOpacity onPress={irRegistrar}><Text style={styles.textRegistrar}>¿No tienes cuenta? Regístrate aquí</Text></TouchableOpacity>
+      
     </View>
   );
 }
@@ -139,73 +136,5 @@ const styles = StyleSheet.create({
     width: 200,
     height: 200,
     marginBottom: 10
-  },
-});
-
-
-/*recuperacion contraseña**/
-
-const PasswordRecovery = () => {
-  const [email, setEmail] = useState('');
-
-  const handlePasswordRecovery = () => {
-      if (email === '') {
-          Alert.alert('Error', 'Please enter your email address.');
-          return;
-      }
-
-      // Aquí puedes agregar la lógica para enviar el correo de recuperación
-      Alert.alert('Success', 'A recovery email has been sent to ' + email);
-
-      // Lógica adicional para el envío de la solicitud
-  };
-
-  return (
-      <View style={styles.container}>
-          <Text style={styles.title}>Password Recovery</Text>
-          <TextInput
-              style={styles.input}
-              placeholder="Enter your email"
-              value={email}
-              onChangeText={setEmail}
-              keyboardType="email-address"
-              autoCapitalize="none"
-          />
-          <TouchableOpacity style={styles.button} onPress={handlePasswordRecovery}>
-              <Text style={styles.buttonText}>Send Recovery Email</Text>
-          </TouchableOpacity>
-      </View>
-  );
-};
-
-const styles1 = StyleSheet.create({
-  container: {
-      flex: 1,
-      justifyContent: 'center',
-      padding: 20,
-      backgroundColor: '#f7f7f7',
-  },
-  title: {
-      fontSize: 24,
-      marginBottom: 20,
-      textAlign: 'center',
-  },
-  input: {
-      height: 40,
-      borderColor: '#ccc',
-      borderWidth: 1,
-      marginBottom: 20,
-      paddingHorizontal: 10,
-      borderRadius: 5,
-  },
-  button: {
-      backgroundColor: '#007BFF',
-      padding: 10,
-      borderRadius: 5,
-      alignItems: 'center',
-  },
-  buttonText: {
-      color: '#fff',
-      fontSize: 16,
   },
 });
