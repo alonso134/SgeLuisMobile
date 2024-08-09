@@ -38,7 +38,7 @@ export default function SignUp({ navigation }) {
             formData.append('claveProfesor', clave);
             formData.append('confirmarClave', confirmarClave);
 
-            const response = await fetch($ip,/EXPO2024/api/services/admin/profesores.php?action=signUp: {
+            const response = await fetch(`${ip}/EXPO2024/api/services/admin/profesores.php?action=signUp`, {
                 method: 'POST',
                 body: formData
             });
@@ -152,5 +152,5 @@ const styles = StyleSheet.create({
         marginVertical: 20, // Aumentado el espacio vertical entre botones
         paddingVertical: 15, // Añadido para aumentar la altura de los botones
         fontSize: 18, // Aumentado el tamaño del texto de los botones
-    }
+    }
 });
