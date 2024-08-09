@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TouchableOpacity, Alert, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, Alert, ScrollView } from 'react-native';
 import { useState } from 'react';
 import * as Constantes from '../utils/constantes';
 import Constants from 'expo-constants';
@@ -38,7 +38,7 @@ export default function SignUp({ navigation }) {
             formData.append('claveProfesor', clave);
             formData.append('confirmarClave', confirmarClave);
 
-            const response = await fetch($,{ip}/EXPO2024/api/services/admin/profesores.php?action=signUp: {
+            const response = await fetch($ip,/EXPO2024/api/services/admin/profesores.php?action=signUp: {
                 method: 'POST',
                 body: formData
             });
@@ -57,49 +57,62 @@ export default function SignUp({ navigation }) {
 
     return (
         <View style={styles.container}>
-            <ScrollView contentContainerStyle={styles.scrollViewStyle}>
+            {/* Título fijo en la parte superior */}
+            <View style={styles.header}>
                 <Text style={styles.texto}>Registrar Usuario</Text>
+            </View>
+
+            {/* Contenido desplazable */}
+            <ScrollView contentContainerStyle={styles.scrollViewStyle}>
                 <Input
                     placeHolder='Nombre Profesor'
                     setValor={nombre}
                     setTextChange={setNombre}
+                    style={styles.input}
                 />
                 <Input
                     placeHolder='Apellido Profesor'
                     setValor={apellido}
                     setTextChange={setApellido}
+                    style={styles.input}
                 />
                 <InputEmail
                     placeHolder='Alias Profesor'
                     setValor={alias}
                     setTextChange={setAlias}
+                    style={styles.input}
                 />
                 <InputEmail
                     placeHolder='Correo Profesor'
                     setValor={correo}
                     setTextChange={setCorreo}
+                    style={styles.input}
                 />
                 <Input
                     placeHolder='Clave'
                     contra={true}
                     setValor={clave}
                     setTextChange={setClave}
+                    style={styles.input}
                 />
                 <Input
                     placeHolder='Confirmar Clave'
                     contra={true}
                     setValor={confirmarClave}
                     setTextChange={setConfirmarClave}
+                    style={styles.input}
                 />
 
                 <Buttons
                     textoBoton='Registrar Usuario'
                     accionBoton={handleCreate}
+                    style={styles.button}
                 />
 
                 <Buttons
                     textoBoton='Ir al Login'
                     accionBoton={handleLogout}
+                    style={styles.button}
                 />
             </ScrollView>
         </View>
@@ -110,23 +123,34 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#778DA9',
-        paddingTop: Constants.statusBarHeight + 10, // Aumenta el margen superior
+        paddingTop: Constants.statusBarHeight + 5,
+    },
+    header: {
+        alignItems: 'center',
+        paddingVertical: 20, // Espaciado para el título
+        backgroundColor: '#778DA9', // Mismo color de fondo que el resto de la pantalla
     },
     scrollViewStyle: {
         alignItems: 'center',
         justifyContent: 'center',
-        padding: 20, // Aumenta el padding alrededor del contenido
+        paddingVertical: 50, // Añadido para centrar el contenido verticalmente
     },
     texto: {
         color: '#322C2B',
         fontWeight: '900',
-        fontSize: 26, // Aumenta el tamaño de la fuente del título
-        marginBottom: 20, // Aumenta el espacio debajo del título
+        fontSize: 28, // Aumentado para hacer el título más visible
     },
-    textRegistrar: {
-        color: '#322C2B',
-        fontWeight: '700',
-        fontSize: 24, // Aumenta el tamaño de la fuente de los textos de los botones
-    }
+    input: {
+        width: '90%', // Aumentado el ancho de los inputs
+        marginBottom: 20,
+        paddingVertical: 10, // Añadido para aumentar la altura de los inputs
+        paddingHorizontal: 15, // Añadido para mayor espacio en los lados de los inputs
+        fontSize: 16, // Aumentado el tamaño del texto de los inputs
+    },
+    button: {
+        width: '90%', // Aumentado el ancho de los botones
+        marginVertical: 20, // Aumentado el espacio vertical entre botones
+        paddingVertical: 15, // Añadido para aumentar la altura de los botones
+        fontSize: 18, // Aumentado el tamaño del texto de los botones
+    }
 });
-
