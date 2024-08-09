@@ -1,131 +1,132 @@
-import React, { useState } from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, FlatList, Alert, TouchableOpacity, Image } from 'react-native';
 import { Appbar } from 'react-native-paper';
-
+import * as Constantes from '../utils/constantes';
 
 const Inscripcion = ({ navigation }) => {
-  
+  const ip = Constantes.IP;
+  const [menuVisible, setMenuVisible] = useState(false);
+  const [observaciones, setObservaciones] = useState([]);
 
-    const [menuVisible, setMenuVisible] = useState(false); // Estado para controlar la visibilidad del primer menú
-    const [secondMenuVisible, setSecondMenuVisible] = useState(false); // Estado para controlar la visibilidad del segundo menú
-  
-    const toggleMenu = () => setMenuVisible(!menuVisible); // Función para alternar el primer menú
-    const toggleSecondMenu = () => setSecondMenuVisible(!secondMenuVisible); // Función para alternar el segundo menú
-        // Información de la ausencia
-        const Tarde = {
-          asignatura: 'Ciencias',
-          docente: 'Daniel Carranza',
-          fecha: '20/08/2024',
-          hora: '1:30 pm',
-        };
-      
-        return (
-          <View style={styles.container}>
-            <Appbar.Header style={styles.appBar}>
-              <Appbar.Content title="CECSL" titleStyle={styles.appBarTitle} />
-              <TouchableOpacity onPress={toggleMenu} style={styles.menuButton}>
-                <Image source={require('../../assets/menu-icon.png')} style={styles.menuIcon} />
-              </TouchableOpacity>
-            </Appbar.Header>
-      
-            <View style={styles.centeredTitleContainer}>
-        <Text style={styles.centeredTitle}>Llegadas Tarde a Clases</Text>
-        <TouchableOpacity onPress={toggleSecondMenu} style={styles.menuButton}>
-          <Image source={require('../../assets/menu-icon.png')} style={styles.menuIcon} />
-        </TouchableOpacity>
+  const toggleMenu = () => setMenuVisible(!menuVisible);
+
+  useEffect(() => {
+    fetchInscripcion();
+  }, []);
+
+  const fetchInscripcion = async () => {
+    try {
+      const response = await fetch(`${ip}/EXPO2024/api/services/admin/inscripcion.php?action=readAll`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      });
+
+      const data = await response.json();
+      console.log('Respuesta de la API:', data); // Log para verificar la respuesta
+      if (data.status === 1) {
+        setObservaciones(data.dataset);
+      } else {
+        console.error(data.error);
+        setObservaciones([]); // Asegurarse de que observaciones es un array
+      }
+    } catch (error) {
+      console.error('Error al obtener las observaciones:', error);
+      setObservaciones([]); // Asegurarse de que observaciones es un array
+    }
+  };
+
+  const renderObservacion = ({ item }) => (
+    <View style={styles.content}>
+      <View style={styles.tableContainer}>
+        <View style={styles.tableRow}>
+          <Text style={styles.tableLabel}>Nombre Estudiante:</Text>
+          <Text style={styles.tableValue}>{item.nombre_estudiante}</Text>
+        </View>
+        <View style={styles.tableRow}>
+          <Text style={styles.tableLabel}>Materia:</Text>
+          <Text style={styles.tableValue}>{item.nombre}</Text>
+        </View> 
       </View>
-
-            {/* Tabla de información de la ausencia */}
-            <View style={styles.content}>
-              <View style={styles.tableContainer}>
-                <View style={styles.tableRow}>
-                  <Text style={styles.tableLabel}>Asignatura:</Text>
-                  <Text style={styles.tableValue}>{Tarde.asignatura}</Text>
-                </View>
-                <View style={styles.tableRow}>
-                  <Text style={styles.tableLabel}>Docente:</Text>
-                  <Text style={styles.tableValue}>{Tarde.docente}</Text>
-                </View>
-                <View style={styles.tableRow}>
-                  <Text style={styles.tableLabel}>Fecha:</Text>
-                  <Text style={styles.tableValue}>{Tarde.fecha}</Text>
-                </View>
-                <View style={styles.tableRow}>
-                  <Text style={styles.tableLabel}>Hora:</Text>
-                  <Text style={styles.tableValue}>{Tarde.hora}</Text>
-                </View>
-              </View>
-            </View>
-
-            {menuVisible && (
-        <View style={styles.overlay}>
-          <View style={styles.menu}>
-            <TouchableOpacity
-              style={styles.menuItem}
-              onPress={() => navigation.navigate('Home')}>
-              <Text>Inicio</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.menuItem}
-              onPress={() => navigation.navigate('MateriasScreen')}>
-              <Text>Materias</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.menuItem}
-              onPress={() => navigation.navigate('Perfil')}>
-              <Text>Perfil</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={styles.menuItem}
-              onPress={() => navigation.navigate('Observaciones')}>
-              <Text>Observaciones</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.menuItem}
-              onPress={() => navigation.navigate('Ausencias')}>
-              <Text>Ausencias</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.menuItem}
-              onPress={() => navigation.navigate('Tarde')}>
-              <Text>Llegadas Tarde</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Codigos')}>
-              <Text>Codigos</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.closeButton} onPress={toggleMenu}>
-              <Text style={styles.closeButtonText}>Cerrar</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      )}
-  
-
-            {/* Segundo menú desplegable */}
-            {secondMenuVisible && (
-        <View style={styles.overlay}>
-          <View style={styles.menu}>
-            <TouchableOpacity
-              style={styles.menuItem}
-              onPress={() => navigation.navigate('Institución')}>
-              <Text>Llegadas Tarde a Institución</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.closeButton} onPress={toggleSecondMenu}>
-              <Text style={styles.closeButtonText}>Cerrar</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      )}
-
     </View>
   );
-};
+
+  return (
+    <View style={styles.container}>
+      <Appbar.Header style={styles.appBar}>
+        <Appbar.Content title="CECSL" titleStyle={styles.appBarTitle} />
+        <TouchableOpacity onPress={toggleMenu} style={styles.menuButton}>
+          <Image source={require('../../assets/menu-icon.png')} style={styles.menuIcon} />
+        </TouchableOpacity>
+      </Appbar.Header>
+
+      <Text style={styles.title}>Observaciones</Text>
+      <FlatList
+        data={observaciones}
+        renderItem={renderObservacion}
+        keyExtractor={item => item.id_observacion.toString()}
+        contentContainerStyle={styles.list}
+      />
+
+      {menuVisible && (
+     <View style={styles.overlay}>
+     <View style={styles.menu}>
+       <TouchableOpacity
+         style={styles.menuItem}
+         onPress={() => navigation.navigate('Home')}>
+         <Text>Inicio</Text>
+       </TouchableOpacity>
+       <TouchableOpacity
+         style={styles.menuItem}
+         onPress={() => navigation.navigate('Estudiantes')}>
+         <Text>Estudiantes</Text>
+       </TouchableOpacity>
+       <TouchableOpacity
+         style={styles.menuItem}
+         onPress={() => navigation.navigate('Perfil')}>
+         <Text>Perfil</Text>
+       </TouchableOpacity>
+       <TouchableOpacity
+         style={styles.menuItem}
+         onPress={() => navigation.navigate('profesores')}>
+         <Text>Profesores</Text>
+       </TouchableOpacity>
+       <TouchableOpacity
+         style={styles.menuItem}
+         onPress={() => navigation.navigate('Asistencia')}>
+         <Text>Asistencia</Text>
+       </TouchableOpacity>
+       <TouchableOpacity
+         style={styles.menuItem}
+         onPress={() => navigation.navigate('Materia')}>
+         <Text>Materias</Text>
+       </TouchableOpacity>
+       <TouchableOpacity
+         style={styles.menuItem}
+         onPress={() => navigation.navigate('comportamientos')}>
+         <Text>Comportamiento</Text>
+       </TouchableOpacity>
+       <TouchableOpacity
+         style={styles.menuItem}
+         onPress={() => navigation.navigate('Codigos')}>
+         <Text>Codigos</Text>
+       </TouchableOpacity>
+   
+       <TouchableOpacity style={styles.closeButton} onPress={toggleMenu}>
+         <Text style={styles.closeButtonText}>Cerrar</Text>
+       </TouchableOpacity>
+     </View>
+   </View>
+      )}
+    </View>
+  );
+}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F0FFFF',
+    backgroundColor: '#F0F0F0',
   },
   appBar: {
     backgroundColor: '#120851',
@@ -146,52 +147,39 @@ const styles = StyleSheet.create({
     width: 35,
     height: 35,
   },
-  centeredTitleContainer: {
-    alignItems: 'center',
-    paddingTop: 10,
-    paddingBottom: 10,
-    backgroundColor: '#FFFFFF',
-    borderBottomWidth: 1,
-    borderBottomColor: '#000000',
-    borderTopWidth: 1,
-    borderTopColor: '#000000',
-  },
-  centeredTitle: {
-    fontSize: 20,
+  title: {
+    fontSize: 24,
     fontWeight: 'bold',
-    color: '#333',
+    textAlign: 'center',
+    marginVertical: 16,
+  },
+  list: {
+    paddingHorizontal: 16,
   },
   content: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 20,
-  },
-  tableContainer: {
     backgroundColor: '#FFFFFF',
     borderRadius: 10,
-    padding: 30, // Aumenta el padding interior para más espacio
+    padding: 16,
+    marginVertical: 8,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
+    shadowOpacity: 0.1,
     shadowRadius: 3.84,
     elevation: 5,
-    marginBottom: 20,
-    width: '95%', // Ajusta el ancho del contenedor de la tabla
-    maxWidth: 600, // Establece un ancho máximo para la tabla
+  },
+  tableContainer: {
+    marginBottom: 8,
   },
   tableRow: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 30, // Aumenta el espacio entre filas
+    marginVertical: 4,
   },
   tableLabel: {
     fontWeight: 'bold',
-    fontSize: 20, // Aumenta el tamaño de la etiqueta
+    flex: 1,
   },
   tableValue: {
-    marginLeft: 10,
-    fontSize: 20, // Aumenta el tamaño del valor
+    flex: 2,
   },
   overlay: {
     ...StyleSheet.absoluteFillObject,
@@ -222,6 +210,17 @@ const styles = StyleSheet.create({
     color: 'red',
     fontSize: 16,
   },
+  logoutButton: {
+    backgroundColor: '#000080',
+    padding: 10,
+    borderRadius: 5,
+    marginTop: 10,
+  },
+  logoutButtonText: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
 });
-
 export default Inscripcion;
