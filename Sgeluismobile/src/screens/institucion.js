@@ -1,61 +1,69 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image } from 'react-native';
+import { View, Text, StyleSheet, FlatList, Alert, TouchableOpacity, Image, TextInput } from 'react-native';
 import { Appbar } from 'react-native-paper';
 import * as Constantes from '../utils/constantes';
 
-const Institución = ({ navigation }) => {
+const Tarde = ({ navigation }) => {
   const ip = Constantes.IP;
   const [menuVisible, setMenuVisible] = useState(false);
-  const [ausencias, setAusencias] = useState([]); // Cambiado a ausencias para mayor claridad
+  const [observaciones, setObservaciones] = useState([]);
+  const [searchQuery, setSearchQuery] = useState(''); // Estado para manejar la búsqueda
 
   const toggleMenu = () => setMenuVisible(!menuVisible);
 
   useEffect(() => {
-    fetchAusencias();
+    fetchtarde();
   }, []);
 
-  const fetchAusencias = async () => {
+  const fetchtarde = async () => {
     try {
-    
-      // const response = await fetch(${ip}/EXPO2024/api/services/admin/ausencias.php?action=readAll);
-      // const data = await response.json();
-      const data = []; 
+      const response = await fetch(`${ip}/EXPO2024/api/services/admin/tardeins.php?action=readAll`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      });
 
-      if (data.length > 0) {
-        setAusencias(data);
+      const data = await response.json();
+      console.log('Respuesta de la API:', data);
+      if (data.status === 1) {
+        setObservaciones(data.dataset);
       } else {
-        setAusencias([]);
+        console.error(data.error);
+        setObservaciones([]);
       }
     } catch (error) {
-      console.error('Error al obtener las ausencias:', error);
-      setAusencias([]);
+      console.error('Error al obtener las observaciones:', error);
+      setObservaciones([]);
     }
   };
 
-  const renderAusencia = ({ item }) => (
+  // Filtrar observaciones en función de la búsqueda
+  const filteredObservaciones = observaciones.filter((item) =>
+    item.nombre_profesor.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    item.fecha.includes(searchQuery) ||
+    item.hora.includes(searchQuery) ||
+    item.estado.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const renderObservacion = ({ item }) => (
     <View style={styles.content}>
       <View style={styles.tableContainer}>
-        <View style={styles.tableRow}>
-          <Text style={styles.tableLabel}>Asignatura:</Text>
-          <Text style={styles.tableValue}>{item.asignatura}</Text>
-        </View>
-        <View style={styles.tableRow}>
-          <Text style={styles.tableLabel}>Docente:</Text>
-          <Text style={styles.tableValue}>{item.docente}</Text>
-        </View>
         <View style={styles.tableRow}>
           <Text style={styles.tableLabel}>Fecha:</Text>
           <Text style={styles.tableValue}>{item.fecha}</Text>
         </View>
         <View style={styles.tableRow}>
+          <Text style={styles.tableLabel}>Profesor:</Text>
+          <Text style={styles.tableValue}>{item.nombre_profesor}</Text>
+        </View>
+        <View style={styles.tableRow}>
+          <Text style={styles.tableLabel}>Hora:</Text>
+          <Text style={styles.tableValue}>{item.hora}</Text>
+        </View>
+        <View style={styles.tableRow}>
           <Text style={styles.tableLabel}>Estado:</Text>
-          <Text style={styles.tableValue}>
-            {item.estado ? (
-              <Image source={require('../../assets/check-icon.png')} style={styles.checkIcon} />
-            ) : (
-              <Text>Pendiente</Text>
-            )}
-          </Text>
+          <Text style={styles.tableValue}>{item.estado}</Text>
         </View>
       </View>
     </View>
@@ -70,48 +78,37 @@ const Institución = ({ navigation }) => {
         </TouchableOpacity>
       </Appbar.Header>
 
-      <Text style={styles.title}>Llegadas tarde al colegio</Text>
-      {ausencias.length === 0 ? (
-        <View style={styles.noDataContainer}>
-          <Text style={styles.noDataText}>No hay información para mostrar aún.</Text>
-        </View>
-      ) : (
-        <FlatList
-          data={ausencias}
-          renderItem={renderAusencia}
-          keyExtractor={item => item.id.toString()} // Asegúrate de que id sea una propiedad en tu objeto
-          contentContainerStyle={styles.list}
-        />
-      )}
+      <Text style={styles.title}>Llegadas Tarde Institucion</Text>
+
+      {/* Cuadro de búsqueda */}
+      <TextInput
+        style={styles.searchBar}
+        placeholder="Buscar por profesor, fecha, hora o estado..."
+        value={searchQuery}
+        onChangeText={(text) => setSearchQuery(text)}
+      />
+
+      <FlatList
+        data={filteredObservaciones}
+        renderItem={renderObservacion}
+        keyExtractor={(item) => item.id_llegada_tarde_institucion.toString()}
+        contentContainerStyle={styles.list}
+      />
 
       {menuVisible && (
         <View style={styles.overlay}>
           <View style={styles.menu}>
-            <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Home')}>
+            <TouchableOpacity
+              style={styles.menuItem}
+              onPress={() => navigation.navigate('Home')}>
               <Text>Inicio</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Estudiantes')}>
+            <TouchableOpacity
+              style={styles.menuItem}
+              onPress={() => navigation.navigate('Estudiantes')}>
               <Text>Estudiantes</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Perfil')}>
-              <Text>Perfil</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('profesores')}>
-              <Text>Profesores</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Asistencia')}>
-              <Text>Asistencia</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Materia')}>
-              <Text>Materias</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('comportamientos')}>
-              <Text>Comportamiento</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Codigos')}>
-              <Text>Códigos</Text>
-            </TouchableOpacity>
-
+            {/* Más opciones del menú */}
             <TouchableOpacity style={styles.closeButton} onPress={toggleMenu}>
               <Text style={styles.closeButtonText}>Cerrar</Text>
             </TouchableOpacity>
@@ -152,6 +149,15 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginVertical: 16,
   },
+  searchBar: {
+    height: 40,
+    borderColor: '#CCCCCC',
+    borderWidth: 1,
+    borderRadius: 8,
+    marginHorizontal: 16,
+    marginBottom: 16,
+    paddingHorizontal: 8,
+  },
   list: {
     paddingHorizontal: 16,
   },
@@ -179,10 +185,6 @@ const styles = StyleSheet.create({
   },
   tableValue: {
     flex: 2,
-  },
-  checkIcon: {
-    width: 30,
-    height: 30,
   },
   overlay: {
     ...StyleSheet.absoluteFillObject,
@@ -213,16 +215,6 @@ const styles = StyleSheet.create({
     color: 'red',
     fontSize: 16,
   },
-  noDataContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
-  },
-  noDataText: {
-    fontSize: 18,
-    color: '#333',
-  },
 });
 
-export default Institución;
+export default Tarde;

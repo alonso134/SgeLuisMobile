@@ -60,6 +60,7 @@ const Tarde = ({ navigation }) => {
           <Text style={styles.tableLabel}>Hora:</Text>
           <Text style={styles.tableValue}>{item.hora}</Text>
         </View>
+    
       </View>
     </View>
   );

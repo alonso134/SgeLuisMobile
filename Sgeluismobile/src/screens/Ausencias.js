@@ -16,19 +16,24 @@ const Ausencias = ({ navigation }) => {
 
   const fetchAusencias = async () => {
     try {
-    
-      // const response = await fetch(${ip}/EXPO2024/api/services/admin/ausencias.php?action=readAll);
-      // const data = await response.json();
-      const data = []; 
+      const response = await fetch(`${ip}/EXPO2024/api/services/admin/ausencia.php?action=readAll`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      });
 
-      if (data.length > 0) {
-        setAusencias(data);
+      const data = await response.json();
+      console.log('Respuesta de la API:', data); // Log para verificar la respuesta
+      if (data.status === 1) {
+        setAusencias(data.dataset);
       } else {
-        setAusencias([]);
+        console.error(data.error);
+        setAusencias([]); // Asegurarse de que observaciones es un array
       }
     } catch (error) {
-      console.error('Error al obtener las ausencias:', error);
-      setAusencias([]);
+      console.error('Error al obtener las observaciones:', error);
+      setAusencias([]); // Asegurarse de que observaciones es un array
     }
   };
 
@@ -36,12 +41,12 @@ const Ausencias = ({ navigation }) => {
     <View style={styles.content}>
       <View style={styles.tableContainer}>
         <View style={styles.tableRow}>
-          <Text style={styles.tableLabel}>Asignatura:</Text>
-          <Text style={styles.tableValue}>{item.asignatura}</Text>
+          <Text style={styles.tableLabel}>Estudiante:</Text>
+          <Text style={styles.tableValue}>{item.nombre_estudiante}</Text>
         </View>
         <View style={styles.tableRow}>
           <Text style={styles.tableLabel}>Docente:</Text>
-          <Text style={styles.tableValue}>{item.docente}</Text>
+          <Text style={styles.tableValue}>{item.nombre_profesor}</Text>
         </View>
         <View style={styles.tableRow}>
           <Text style={styles.tableLabel}>Fecha:</Text>
@@ -49,13 +54,7 @@ const Ausencias = ({ navigation }) => {
         </View>
         <View style={styles.tableRow}>
           <Text style={styles.tableLabel}>Estado:</Text>
-          <Text style={styles.tableValue}>
-            {item.estado ? (
-              <Image source={require('../../assets/check-icon.png')} style={styles.checkIcon} />
-            ) : (
-              <Text>Pendiente</Text>
-            )}
-          </Text>
+          <Text style={styles.tableValue}>{item.estado_justificacion}</Text>
         </View>
       </View>
     </View>
@@ -79,7 +78,7 @@ const Ausencias = ({ navigation }) => {
         <FlatList
           data={ausencias}
           renderItem={renderAusencia}
-          keyExtractor={item => item.id.toString()} // Asegúrate de que id sea una propiedad en tu objeto
+          keyExtractor={item => item.id_ausencia.toString()} // Asegúrate de que id sea una propiedad en tu objeto
           contentContainerStyle={styles.list}
         />
       )}
