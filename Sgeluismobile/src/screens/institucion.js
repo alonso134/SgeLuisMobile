@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, FlatList, Alert, TouchableOpacity, Image, TextInput } from 'react-native';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, TextInput } from 'react-native';
 import { Appbar } from 'react-native-paper';
 import * as Constantes from '../utils/constantes';
 
@@ -7,7 +7,7 @@ const Tarde = ({ navigation }) => {
   const ip = Constantes.IP;
   const [menuVisible, setMenuVisible] = useState(false);
   const [observaciones, setObservaciones] = useState([]);
-  const [searchQuery, setSearchQuery] = useState(''); // Estado para manejar la búsqueda
+  const [searchQuery, setSearchQuery] = useState('');
 
   const toggleMenu = () => setMenuVisible(!menuVisible);
 
@@ -38,7 +38,6 @@ const Tarde = ({ navigation }) => {
     }
   };
 
-  // Filtrar observaciones en función de la búsqueda
   const filteredObservaciones = observaciones.filter((item) =>
     item.nombre_profesor.toLowerCase().includes(searchQuery.toLowerCase()) ||
     item.fecha.includes(searchQuery) ||
@@ -78,7 +77,7 @@ const Tarde = ({ navigation }) => {
         </TouchableOpacity>
       </Appbar.Header>
 
-      <Text style={styles.title}>Llegadas Tarde Institucion</Text>
+      <Text style={styles.title}>Llegadas Tarde Institución</Text>
 
       {/* Cuadro de búsqueda */}
       <TextInput
@@ -108,7 +107,6 @@ const Tarde = ({ navigation }) => {
               onPress={() => navigation.navigate('Estudiantes')}>
               <Text>Estudiantes</Text>
             </TouchableOpacity>
-            {/* Más opciones del menú */}
             <TouchableOpacity style={styles.closeButton} onPress={toggleMenu}>
               <Text style={styles.closeButtonText}>Cerrar</Text>
             </TouchableOpacity>
@@ -150,13 +148,17 @@ const styles = StyleSheet.create({
     marginVertical: 16,
   },
   searchBar: {
-    height: 40,
-    borderColor: '#CCCCCC',
-    borderWidth: 1,
-    borderRadius: 8,
+    backgroundColor: '#FFF',
+    borderRadius: 10,
+    padding: 10,
     marginHorizontal: 16,
     marginBottom: 16,
-    paddingHorizontal: 8,
+    fontSize: 16,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   list: {
     paddingHorizontal: 16,

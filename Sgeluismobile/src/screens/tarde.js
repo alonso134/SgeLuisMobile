@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, FlatList, Alert, TouchableOpacity, Image } from 'react-native';
+import { View, Text, StyleSheet, FlatList, Alert, TouchableOpacity, Image, TextInput } from 'react-native';
 import { Appbar } from 'react-native-paper';
 import * as Constantes from '../utils/constantes';
 
@@ -7,12 +7,27 @@ const Tarde = ({ navigation }) => {
   const ip = Constantes.IP;
   const [menuVisible, setMenuVisible] = useState(false);
   const [observaciones, setObservaciones] = useState([]);
+  const [searchText, setSearchText] = useState('');
+  const [filteredObservaciones, setFilteredObservaciones] = useState([]);
 
   const toggleMenu = () => setMenuVisible(!menuVisible);
 
   useEffect(() => {
     fetchtarde();
   }, []);
+
+  useEffect(() => {
+    if (searchText === '') {
+      setFilteredObservaciones(observaciones);
+    } else {
+      const filteredData = observaciones.filter((item) =>
+        item.nombre_estudiante.toLowerCase().includes(searchText.toLowerCase()) ||
+        item.nombre_profesor.toLowerCase().includes(searchText.toLowerCase()) ||
+        item.nombre.toLowerCase().includes(searchText.toLowerCase())
+      );
+      setFilteredObservaciones(filteredData);
+    }
+  }, [searchText, observaciones]);
 
   const fetchtarde = async () => {
     try {
@@ -27,13 +42,16 @@ const Tarde = ({ navigation }) => {
       console.log('Respuesta de la API:', data); // Log para verificar la respuesta
       if (data.status === 1) {
         setObservaciones(data.dataset);
+        setFilteredObservaciones(data.dataset);
       } else {
         console.error(data.error);
         setObservaciones([]); // Asegurarse de que observaciones es un array
+        setFilteredObservaciones([]);
       }
     } catch (error) {
       console.error('Error al obtener las observaciones:', error);
       setObservaciones([]); // Asegurarse de que observaciones es un array
+      setFilteredObservaciones([]);
     }
   };
 
@@ -60,7 +78,6 @@ const Tarde = ({ navigation }) => {
           <Text style={styles.tableLabel}>Hora:</Text>
           <Text style={styles.tableValue}>{item.hora}</Text>
         </View>
-    
       </View>
     </View>
   );
@@ -75,62 +92,55 @@ const Tarde = ({ navigation }) => {
       </Appbar.Header>
 
       <Text style={styles.title}>Llegadas Tarde</Text>
+
+      {/* Buscador */}
+      <TextInput
+        style={styles.searchInput}
+        placeholder="Buscar por estudiante, profesor o materia..."
+        value={searchText}
+        onChangeText={setSearchText}
+      />
+
       <FlatList
-        data={observaciones}
+        data={filteredObservaciones}
         renderItem={renderObservacion}
         keyExtractor={item => item.id_llegada.toString()}
         contentContainerStyle={styles.list}
       />
 
       {menuVisible && (
-     <View style={styles.overlay}>
-     <View style={styles.menu}>
-       <TouchableOpacity
-         style={styles.menuItem}
-         onPress={() => navigation.navigate('Home')}>
-         <Text>Inicio</Text>
-       </TouchableOpacity>
-       <TouchableOpacity
-         style={styles.menuItem}
-         onPress={() => navigation.navigate('Estudiantes')}>
-         <Text>Estudiantes</Text>
-       </TouchableOpacity>
-       <TouchableOpacity
-         style={styles.menuItem}
-         onPress={() => navigation.navigate('Perfil')}>
-         <Text>Perfil</Text>
-       </TouchableOpacity>
-       <TouchableOpacity
-         style={styles.menuItem}
-         onPress={() => navigation.navigate('profesores')}>
-         <Text>Profesores</Text>
-       </TouchableOpacity>
-       <TouchableOpacity
-         style={styles.menuItem}
-         onPress={() => navigation.navigate('Asistencia')}>
-         <Text>Asistencia</Text>
-       </TouchableOpacity>
-       <TouchableOpacity
-         style={styles.menuItem}
-         onPress={() => navigation.navigate('Materia')}>
-         <Text>Materias</Text>
-       </TouchableOpacity>
-       <TouchableOpacity
-         style={styles.menuItem}
-         onPress={() => navigation.navigate('comportamientos')}>
-         <Text>Comportamiento</Text>
-       </TouchableOpacity>
-       <TouchableOpacity
-         style={styles.menuItem}
-         onPress={() => navigation.navigate('Codigos')}>
-         <Text>Codigos</Text>
-       </TouchableOpacity>
-   
-       <TouchableOpacity style={styles.closeButton} onPress={toggleMenu}>
-         <Text style={styles.closeButtonText}>Cerrar</Text>
-       </TouchableOpacity>
-     </View>
-   </View>
+        <View style={styles.overlay}>
+          <View style={styles.menu}>
+            <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Home')}>
+              <Text>Inicio</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Estudiantes')}>
+              <Text>Estudiantes</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Perfil')}>
+              <Text>Perfil</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('profesores')}>
+              <Text>Profesores</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Asistencia')}>
+              <Text>Asistencia</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Materia')}>
+              <Text>Materias</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('comportamientos')}>
+              <Text>Comportamiento</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Codigos')}>
+              <Text>Codigos</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.closeButton} onPress={toggleMenu}>
+              <Text style={styles.closeButtonText}>Cerrar</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
       )}
     </View>
   );
@@ -165,6 +175,19 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
     marginVertical: 16,
+  },
+  searchInput: {
+    backgroundColor: '#FFF',
+    borderRadius: 10,
+    padding: 10,
+    marginHorizontal: 16,
+    marginBottom: 16,
+    fontSize: 16,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   list: {
     paddingHorizontal: 16,
@@ -223,17 +246,6 @@ const styles = StyleSheet.create({
     color: 'red',
     fontSize: 16,
   },
-  logoutButton: {
-    backgroundColor: '#000080',
-    padding: 10,
-    borderRadius: 5,
-    marginTop: 10,
-  },
-  logoutButtonText: {
-    color: '#FFFFFF',
-    fontSize: 16,
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
 });
+
 export default Tarde;
