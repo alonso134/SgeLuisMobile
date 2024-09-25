@@ -5,7 +5,6 @@ import carga from './src/screens/carga.js';
 import Home from './src/screens/Home.js';
 import Sesion from './src/screens/Sesion.js';
 import Codigos from './src/screens/codigos.js'; 
-import SignUp from './src/screens/SignUp.js';
 import Ausencias from './src/screens/Ausencias.js';
 import Observacion from './src/screens/Observaciones.js'; 
 import Tarde from './src/screens/tarde.js'; 
@@ -55,7 +54,7 @@ export default function App() {
         <Stack.Screen name="profesores" component={profesores} />
         <Stack.Screen name="Perfil" component={Perfil} />
         <Stack.Screen name="Inscripcion" component={Inscripcion} />
-        <Stack.Screen name="SignUp" component={SignUp} />
+
       </Stack.Navigator>
     </NavigationContainer>
   );

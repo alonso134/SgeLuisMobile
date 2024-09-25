@@ -1,12 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, FlatList, Alert, TouchableOpacity, Image } from 'react-native';
+import { View, Text, StyleSheet, FlatList, Alert, TouchableOpacity, Image, TextInput } from 'react-native';
 import { Appbar } from 'react-native-paper';
 import * as Constantes from '../utils/constantes';
+import { Searchbar } from 'react-native-paper';
 
 const EstudianteScreen = ({ navigation }) => {
   const ip = Constantes.IP;
   const [menuVisible, setMenuVisible] = useState(false);
   const [observaciones, setEstudiantes] = useState([]);
+  const [searchText, setSearchText] = useState(''); // Estado para el texto del buscador
+  const [filteredEstudiantes, setFilteredEstudiantes] = useState([]); // Estado para los resultados filtrados
+  const [searchQuery, setSearchQuery] = useState("");
+  //Constantes para la busqueda con el elemento de la libreria searchBar
+  const onChangeSearch = (query) => setSearchQuery(query);
+
 
   const toggleMenu = () => setMenuVisible(!menuVisible);
 
@@ -14,28 +21,65 @@ const EstudianteScreen = ({ navigation }) => {
     fetchEstudiantes();
   }, []);
 
-  const fetchEstudiantes = async () => {
-    try {
-      const response = await fetch(`${ip}/EXPO2024/api/services/admin/estudiante.php?action=readAll`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-      });
+  useEffect(() => {
+    // Filtra los estudiantes basados en el texto de búsqueda
+    setFilteredEstudiantes(
+      observaciones.filter(estudiante =>
+        estudiante.nombre_estudiante.toLowerCase().includes(searchText.toLowerCase()) ||
+        estudiante.apellido_estudiante.toLowerCase().includes(searchText.toLowerCase())
+      )
+    );
+  }, [searchText, observaciones]);
 
-      const data = await response.json();
-      console.log('Respuesta de la API:', data); // Log para verificar la respuesta
-      if (data.status === 1) {
-        setEstudiantes(data.dataset);
-      } else {
-        console.error(data.error);
-        setEstudiantes([]); // Asegurarse de que observaciones es un array
+  const fetchEstudiantes = async (searchForm = null) => {
+    try {
+      const action = searchForm ? "searchRows" : "readAll";
+
+      if(action == "searchRows"){
+        const response = await fetch(`${ip}/EXPO2024/api/services/admin/estudiante.php?action=searchRows`, {
+          method: 'POST',
+          body: searchForm,
+        });
+        const data = await response.json();
+        console.log('Respuesta de la API:', data); // Log para verificar la respuesta
+        if (data.status === 1) {
+          setEstudiantes(data.dataset);
+        } else {
+          console.error(data.error);
+          setEstudiantes([]); 
+        }
+      }else{
+        const response = await fetch(`${ip}/EXPO2024/api/services/admin/estudiante.php?action=readAll`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+        });
+        const data = await response.json();
+        console.log('Respuesta de la API:', data); // Log para verificar la respuesta
+        if (data.status === 1) {
+          setEstudiantes(data.dataset);
+        } else {
+          console.error(data.error);
+          setEstudiantes([]);
+        }
       }
     } catch (error) {
       console.error('Error al obtener los estudiantes:', error);
-      setEstudiantes([]); // Asegurarse de que observaciones es un array
+      setObservaciones([]); // Asegurarse de que observaciones es un array
+      setFilteredObservaciones([]);
     }
   };
+  
+  useEffect(() => {
+    if (searchQuery != "") {
+      const formData = new FormData();
+      formData.append("search", searchQuery);
+      fetchEstudiantes(formData);
+    } else {
+      fetchEstudiantes();
+    }
+  }, [searchQuery]);
 
   const renderObservacion = ({ item }) => (
     <View style={styles.content}>
@@ -74,62 +118,70 @@ const EstudianteScreen = ({ navigation }) => {
       </Appbar.Header>
 
       <Text style={styles.title}>Estudiantes</Text>
+      
+        <Searchbar
+        placeholder="Buscar estudiantes..."
+        onChangeText={onChangeSearch}
+        value={searchQuery}
+        placeholderTextColor='gray'
+        style={styles.searchInput}
+      />
       <FlatList
-        data={observaciones}
+        data={filteredEstudiantes} // Muestra los estudiantes filtrados
         renderItem={renderObservacion}
         keyExtractor={item => item.id_estudiante.toString()}
         contentContainerStyle={styles.list}
       />
 
       {menuVisible && (
-         <View style={styles.overlay}>
-         <View style={styles.menu}>
-           <TouchableOpacity
-             style={styles.menuItem}
-             onPress={() => navigation.navigate('Home')}>
-             <Text>Inicio</Text>
-           </TouchableOpacity>
-           <TouchableOpacity
-             style={styles.menuItem}
-             onPress={() => navigation.navigate('Estudiantes')}>
-             <Text>Estudiantes</Text>
-           </TouchableOpacity>
-           <TouchableOpacity
-             style={styles.menuItem}
-             onPress={() => navigation.navigate('Perfil')}>
-             <Text>Perfil</Text>
-           </TouchableOpacity>
-           <TouchableOpacity
-             style={styles.menuItem}
-             onPress={() => navigation.navigate('profesores')}>
-             <Text>Profesores</Text>
-           </TouchableOpacity>
-           <TouchableOpacity
-             style={styles.menuItem}
-             onPress={() => navigation.navigate('Asistencia')}>
-             <Text>Asistencia</Text>
-           </TouchableOpacity>
-           <TouchableOpacity
-             style={styles.menuItem}
-             onPress={() => navigation.navigate('Materia')}>
-             <Text>Materias</Text>
-           </TouchableOpacity>
-           <TouchableOpacity
-             style={styles.menuItem}
-             onPress={() => navigation.navigate('comportamientos')}>
-             <Text>Comportamiento</Text>
-           </TouchableOpacity>
-           <TouchableOpacity
-             style={styles.menuItem}
-             onPress={() => navigation.navigate('Codigos')}>
-             <Text>Codigos</Text>
-           </TouchableOpacity>
-       
-           <TouchableOpacity style={styles.closeButton} onPress={toggleMenu}>
-             <Text style={styles.closeButtonText}>Cerrar</Text>
-           </TouchableOpacity>
-         </View>
-       </View>
+        <View style={styles.overlay}>
+          <View style={styles.menu}>
+            <TouchableOpacity
+              style={styles.menuItem}
+              onPress={() => navigation.navigate('Home')}>
+              <Text>Inicio</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.menuItem}
+              onPress={() => navigation.navigate('Estudiantes')}>
+              <Text>Estudiantes</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.menuItem}
+              onPress={() => navigation.navigate('Perfil')}>
+              <Text>Perfil</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.menuItem}
+              onPress={() => navigation.navigate('profesores')}>
+              <Text>Profesores</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.menuItem}
+              onPress={() => navigation.navigate('Asistencia')}>
+              <Text>Asistencia</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.menuItem}
+              onPress={() => navigation.navigate('Materia')}>
+              <Text>Materias</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.menuItem}
+              onPress={() => navigation.navigate('comportamientos')}>
+              <Text>Comportamiento</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.menuItem}
+              onPress={() => navigation.navigate('Codigos')}>
+              <Text>Codigos</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.closeButton} onPress={toggleMenu}>
+              <Text style={styles.closeButtonText}>Cerrar</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
       )}
     </View>
   );
@@ -234,5 +286,15 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
   },
+  searchBar: {
+    marginHorizontal: 16,
+    marginBottom: 10,
+    padding: 10,
+    borderColor: '#CCCCCC',
+    borderWidth: 1,
+    borderRadius: 8,
+    backgroundColor: '#FFFFFF',
+  },
 });
+
 export default EstudianteScreen;

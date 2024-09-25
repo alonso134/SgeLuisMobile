@@ -61,7 +61,7 @@ const Inscripcion = ({ navigation }) => {
         </TouchableOpacity>
       </Appbar.Header>
 
-      <Text style={styles.title}>Observaciones</Text>
+      <Text style={styles.title}>Inscripciones</Text>
       <FlatList
         data={observaciones}
         renderItem={renderObservacion}

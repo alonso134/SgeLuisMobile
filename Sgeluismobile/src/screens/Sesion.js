@@ -1,56 +1,57 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Image, TouchableOpacity, Alert } from 'react-native';
 import { useEffect, useState } from 'react';
-import Input from '../components/Inputs/Input'
+import Input from '../components/Inputs/Input';
 import Buttons from '../components/Buttons/Button';
-import * as Constantes from '../utils/constantes'
+import * as Constantes from '../utils/constantes';
 
 export default function Sesion({ navigation }) {
   const ip = Constantes.IP;
 
-  const [isContra, setIsContra] = useState(true)
-  const [usuario, setUsuario] = useState('')
-  const [contrasenia, setContrasenia] = useState('')
+  const [isContra, setIsContra] = useState(true);
+  const [usuario, setUsuario] = useState('');
+  const [contrasenia, setContrasenia] = useState('');
 
   const validarSesion = async () => {
     try {
       const response = await fetch(`${ip}/EXPO2024/api/services/admin/profesores.php?action=getUser`, {
-        method: 'GET'
+        method: 'GET',
       });
-  
+
       const data = await response.json();
-  
+
       if (data.status === 1) {
-        cerrarSesion();
-        console.log("Se eliminó la sesión")
+        navigation.navigate('carga');
+        /* cerrarSesion();
+        console.log("Se eliminó la sesión"); */
       } else {
-        console.log("No hay sesión activa")
-        return
+        console.log("No hay sesión activa");
+        return;
       }
     } catch (error) {
       console.error(error);
       Alert.alert('Error', 'Ocurrió un error al validar la sesión');
     }
-  }
+  };
 
   const cerrarSesion = async () => {
     try {
       const response = await fetch(`${ip}/EXPO2024/api/services/admin/profesores.php?action=logOut`, {
-        method: 'GET'
+        method: 'GET',
       });
 
       const data = await response.json();
 
       if (data.status) {
-        console.log("Sesión Finalizada")
+        console.log("Sesión Finalizada");
       } else {
-        console.log('No se pudo eliminar la sesión')
+        console.log('No se pudo eliminar la sesión');
       }
     } catch (error) {
       console.error(error, "Error desde Catch");
-      Alert.alert('Error', 'Ocurrió un error al iniciar sesión con bryancito');
+      Alert.alert('Error', 'Ocurrió un error al iniciar sesión');
     }
-  }
+  };
 
   const handlerLogin = async () => {
     // Validación de campos vacíos
@@ -66,14 +67,14 @@ export default function Sesion({ navigation }) {
 
       const response = await fetch(`${ip}/EXPO2024/api/services/admin/profesores.php?action=logIn`, {
         method: 'POST',
-        body: formData
+        body: formData,
       });
 
       const data = await response.json();
 
       if (data.status) {
-        setContrasenia('')
-        setUsuario('')
+        setContrasenia('');
+        setUsuario('');
         navigation.navigate('carga');
       } else {
         console.log(data);
@@ -85,11 +86,9 @@ export default function Sesion({ navigation }) {
     }
   };
 
-  const irRegistrar = async () => {
-    navigation.navigate('SignUp');
-  };
-
-  useEffect(() => { validarSesion() }, [])
+  useEffect(() => {
+    validarSesion();
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -107,11 +106,12 @@ export default function Sesion({ navigation }) {
         placeHolder='Contraseña'
         setValor={contrasenia}
         setTextChange={setContrasenia}
-        contra={isContra} />
+        contra={isContra}
+      />
       <Buttons
         textoBoton='Iniciar Sesión'
-        accionBoton={handlerLogin} />
-      <TouchableOpacity onPress={irRegistrar}><Text style={styles.textRegistrar}>¿No tienes cuenta? Regístrate aquí</Text></TouchableOpacity>
+        accionBoton={handlerLogin}
+      />
     </View>
   );
 }
@@ -124,17 +124,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   texto: {
-    color: '#322C2B', fontWeight: '900',
-    fontSize: 20
-  },
-  textRegistrar: {
-    color: '#322C2B', fontWeight: '700',
-    fontSize: 18,
-    marginTop: 10
+    color: '#322C2B',
+    fontWeight: '900',
+    fontSize: 20,
   },
   image: {
     width: 200,
     height: 200,
-    marginBottom: 10
+    marginBottom: 10,
   },
 });

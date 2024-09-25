@@ -1,20 +1,26 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image } from 'react-native';
+import { View, Text, StyleSheet, FlatList, Alert, TouchableOpacity, Image, TextInput } from 'react-native';
 import { Appbar } from 'react-native-paper';
 import * as Constantes from '../utils/constantes';
 
 const Ausencias = ({ navigation }) => {
   const ip = Constantes.IP;
   const [menuVisible, setMenuVisible] = useState(false);
-  const [ausencias, setAusencias] = useState([]); // Cambiado a ausencias para mayor claridad
+  const [observaciones, setObservaciones] = useState([]);
+  const [searchText, setSearchText] = useState(''); // Estado para el texto de búsqueda
+  const [filteredObservaciones, setFilteredObservaciones] = useState([]); // Estado para observaciones filtradas
 
   const toggleMenu = () => setMenuVisible(!menuVisible);
 
   useEffect(() => {
-    fetchAusencias();
+    fetchObservaciones();
   }, []);
 
-  const fetchAusencias = async () => {
+  useEffect(() => {
+    filterObservaciones();
+  }, [searchText, observaciones]); // Filtrar cuando cambia el texto de búsqueda o las observaciones
+
+  const fetchObservaciones = async () => {
     try {
       const response = await fetch(`${ip}/EXPO2024/api/services/admin/ausencia.php?action=readAll`, {
         method: 'POST',
@@ -26,18 +32,34 @@ const Ausencias = ({ navigation }) => {
       const data = await response.json();
       console.log('Respuesta de la API:', data); // Log para verificar la respuesta
       if (data.status === 1) {
-        setAusencias(data.dataset);
+        setObservaciones(data.dataset);
+        setFilteredObservaciones(data.dataset); // Inicialmente mostrar todas las observaciones
       } else {
         console.error(data.error);
-        setAusencias([]); // Asegurarse de que observaciones es un array
+        setObservaciones([]);
+        setFilteredObservaciones([]); // Asegurarse de que filteredObservaciones es un array
       }
     } catch (error) {
       console.error('Error al obtener las observaciones:', error);
-      setAusencias([]); // Asegurarse de que observaciones es un array
+      setObservaciones([]);
+      setFilteredObservaciones([]); // Asegurarse de que filteredObservaciones es un array
     }
   };
 
-  const renderAusencia = ({ item }) => (
+  const filterObservaciones = () => {
+    if (searchText === '') {
+      setFilteredObservaciones(observaciones); // Mostrar todas si no hay texto de búsqueda
+    } else {
+      const filtered = observaciones.filter(observacion =>
+        observacion.nombre_estudiante.toLowerCase().includes(searchText.toLowerCase()) ||
+        observacion.nombre_profesor.toLowerCase().includes(searchText.toLowerCase()) ||
+        observacion.fecha.toLowerCase().includes(searchText.toLowerCase())
+      );
+      setFilteredObservaciones(filtered);
+    }
+  };
+
+  const renderObservacion = ({ item }) => (
     <View style={styles.content}>
       <View style={styles.tableContainer}>
         <View style={styles.tableRow}>
@@ -59,7 +81,6 @@ const Ausencias = ({ navigation }) => {
       </View>
     </View>
   );
-
   return (
     <View style={styles.container}>
       <Appbar.Header style={styles.appBar}>
@@ -70,58 +91,78 @@ const Ausencias = ({ navigation }) => {
       </Appbar.Header>
 
       <Text style={styles.title}>Ausencias</Text>
-      {ausencias.length === 0 ? (
-        <View style={styles.noDataContainer}>
-          <Text style={styles.noDataText}>No hay información para mostrar aún.</Text>
-        </View>
-      ) : (
-        <FlatList
-          data={ausencias}
-          renderItem={renderAusencia}
-          keyExtractor={item => item.id_ausencia.toString()} // Asegúrate de que id sea una propiedad en tu objeto
-          contentContainerStyle={styles.list}
-        />
-      )}
 
-      {menuVisible && (
-        <View style={styles.overlay}>
-          <View style={styles.menu}>
-            <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Home')}>
-              <Text>Inicio</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Estudiantes')}>
-              <Text>Estudiantes</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Perfil')}>
-              <Text>Perfil</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('profesores')}>
-              <Text>Profesores</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Asistencia')}>
-              <Text>Asistencia</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Materia')}>
-              <Text>Materias</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('comportamientos')}>
-              <Text>Comportamiento</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Codigos')}>
-              <Text>Códigos</Text>
-            </TouchableOpacity>
+      {/* Campo de búsqueda */}
+      <TextInput
+        style={styles.searchInput}
+        placeholder="Buscar Ausencias"
+        value={searchText}
+        onChangeText={setSearchText}
+      />
 
-            <TouchableOpacity style={styles.closeButton} onPress={toggleMenu}>
-              <Text style={styles.closeButtonText}>Cerrar</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
+      <FlatList
+        data={filteredObservaciones} // Mostrar las observaciones filtradas
+        renderItem={renderObservacion}
+        keyExtractor={item => item.id_ausencia.toString()}
+        contentContainerStyle={styles.list}
+      />
+
+{menuVisible && (
+         <View style={styles.overlay}>
+         <View style={styles.menu}>
+           <TouchableOpacity
+             style={styles.menuItem}
+             onPress={() => navigation.navigate('Home')}>
+             <Text>Inicio</Text>
+           </TouchableOpacity>
+           <TouchableOpacity
+             style={styles.menuItem}
+             onPress={() => navigation.navigate('Estudiantes')}>
+             <Text>Estudiantes</Text>
+           </TouchableOpacity>
+           <TouchableOpacity
+             style={styles.menuItem}
+             onPress={() => navigation.navigate('Perfil')}>
+             <Text>Perfil</Text>
+           </TouchableOpacity>
+           <TouchableOpacity
+             style={styles.menuItem}
+             onPress={() => navigation.navigate('Observaciones')}>
+             <Text>Profesores</Text>
+           </TouchableOpacity>
+           <TouchableOpacity
+             style={styles.menuItem}
+             onPress={() => navigation.navigate('Asistencia')}>
+             <Text>Asistencia</Text>
+           </TouchableOpacity>
+           <TouchableOpacity
+             style={styles.menuItem}
+             onPress={() => navigation.navigate('Materia')}>
+             <Text>Materias</Text>
+           </TouchableOpacity>
+           <TouchableOpacity
+             style={styles.menuItem}
+             onPress={() => navigation.navigate('comportamientos')}>
+             <Text>Comportamiento</Text>
+           </TouchableOpacity>
+           <TouchableOpacity
+             style={styles.menuItem}
+             onPress={() => navigation.navigate('Codigos')}>
+             <Text>Codigos</Text>
+           </TouchableOpacity>
+       
+           <TouchableOpacity style={styles.closeButton} onPress={toggleMenu}>
+             <Text style={styles.closeButtonText}>Cerrar</Text>
+           </TouchableOpacity>
+         </View>
+       </View>
       )}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  // Estilos existentes
   container: {
     flex: 1,
     backgroundColor: '#F0F0F0',
@@ -151,6 +192,15 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginVertical: 16,
   },
+  searchInput: {
+    backgroundColor: '#FFFFFF',
+    padding: 10,
+    marginHorizontal: 16,
+    borderRadius: 10,
+    borderColor: '#CCCCCC',
+    borderWidth: 1,
+    marginBottom: 10,
+  },
   list: {
     paddingHorizontal: 16,
   },
@@ -178,10 +228,6 @@ const styles = StyleSheet.create({
   },
   tableValue: {
     flex: 2,
-  },
-  checkIcon: {
-    width: 30,
-    height: 30,
   },
   overlay: {
     ...StyleSheet.absoluteFillObject,
@@ -211,16 +257,6 @@ const styles = StyleSheet.create({
   closeButtonText: {
     color: 'red',
     fontSize: 16,
-  },
-  noDataContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
-  },
-  noDataText: {
-    fontSize: 18,
-    color: '#333',
   },
 });
 
