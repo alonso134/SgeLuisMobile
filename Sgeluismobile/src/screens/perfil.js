@@ -10,7 +10,7 @@ const Perfil = ({ navigation }) => {
 
   const fetchProfile = async () => {
     try {
-      const response = await fetch(`${ip}/EXPO2024/api/services/admin/profesores.php?action=readProfile`, {
+      const response = await fetch(`${ip}/Expo2024/api/services/admin/profesores.php?action=readProfile`, {
         method: 'GET',
       });
       const data = await response.json();
@@ -33,7 +33,7 @@ const Perfil = ({ navigation }) => {
 
   const handleLogout = async () => {
     try {
-      const response = await fetch(`${ip}/EXPO2024/api/services/admin/profesores.php?action=logOut`, {
+      const response = await fetch(`${ip}/Expo2024/api/services/admin/profesores.php?action=logOut`, {
         method: 'GET',
       });
       const data = await response.json();

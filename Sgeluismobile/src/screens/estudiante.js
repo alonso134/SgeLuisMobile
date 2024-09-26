@@ -36,7 +36,7 @@ const EstudianteScreen = ({ navigation }) => {
       const action = searchForm ? "searchRows" : "readAll";
 
       if(action == "searchRows"){
-        const response = await fetch(`${ip}/EXPO2024/api/services/admin/estudiante.php?action=searchRows`, {
+        const response = await fetch(`${ip}/Expo2024/api/services/admin/estudiante.php?action=searchRows`, {
           method: 'POST',
           body: searchForm,
         });
@@ -49,7 +49,7 @@ const EstudianteScreen = ({ navigation }) => {
           setEstudiantes([]); 
         }
       }else{
-        const response = await fetch(`${ip}/EXPO2024/api/services/admin/estudiante.php?action=readAll`, {
+        const response = await fetch(`${ip}/Expo2024/api/services/admin/estudiante.php?action=readAll`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded',

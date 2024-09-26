@@ -22,7 +22,7 @@ const Tarde = ({ navigation }) => {
 
   const fetchObservaciones = async () => {
     try {
-      const response = await fetch(`${ip}/EXPO2024/api/services/admin/tardeins.php?action=readAll`, {
+      const response = await fetch(`${ip}/Expo2024/api/services/admin/tardeins.php?action=readAll`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',

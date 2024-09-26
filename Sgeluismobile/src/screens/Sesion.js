@@ -14,7 +14,7 @@ export default function Sesion({ navigation }) {
 
   const validarSesion = async () => {
     try {
-      const response = await fetch(`${ip}/EXPO2024/api/services/admin/profesores.php?action=getUser`, {
+      const response = await fetch(`${ip}/Expo2024/api/services/admin/profesores.php?action=getUser`, {
         method: 'GET',
       });
 
@@ -36,7 +36,7 @@ export default function Sesion({ navigation }) {
 
   const cerrarSesion = async () => {
     try {
-      const response = await fetch(`${ip}/EXPO2024/api/services/admin/profesores.php?action=logOut`, {
+      const response = await fetch(`${ip}/Expo2024/api/services/admin/profesores.php?action=logOut`, {
         method: 'GET',
       });
 
@@ -65,7 +65,7 @@ export default function Sesion({ navigation }) {
       formData.append('alias', usuario);
       formData.append('clave', contrasenia);
 
-      const response = await fetch(`${ip}/EXPO2024/api/services/admin/profesores.php?action=logIn`, {
+      const response = await fetch(`${ip}/Expo2024/api/services/admin/profesores.php?action=logIn`, {
         method: 'POST',
         body: formData,
       });
